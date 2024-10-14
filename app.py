@@ -1,389 +1,326 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "id": "initial_id",
-   "metadata": {
-    "collapsed": True,
-    "ExecuteTime": {
-     "end_time": "2024-10-14T19:36:36.499489Z",
-     "start_time": "2024-10-14T19:36:34.153883Z"
-    }
-   },
-   "source": [
-    "import dash\n",
-    "from dash import dcc, html, Input, Output\n",
-    "import dash_daq as daq  # Importing dash_daq for ToggleSwitch\n",
-    "import plotly.express as px\n",
-    "import pandas as pd\n",
-    "import os\n",
-    "df_unique = pd.read_csv('assets/df_unique.csv')\n",
-    "paper_counts = pd.read_csv('assets/paper_counts.csv')\n",
-    "\n",
-    "spektrum = ['#F2A604', '#ED90AE', '#59A689', '#5DAA53', '#0A4E6B', '#232323']\n",
-    "\n",
-    "# Initialize the Dash app\n",
-    "app = dash.Dash(__name__, suppress_callback_exceptions=True)\n",
-    "\n",
-    "server = app.server\n",
-    "\n",
-    "light_sequential = ['#e09351', '#e4a671', '#e7b890', '#ebcbb0', '#efded0', '#f2f0ef']\n",
-    "dark_sequential = ['#292523', '#4e3b2c', '#725135', '#97673f', '#bb7d48', '#e09351']\n",
-    "\n",
-    "# Define a custom color palette\n",
-    "darkmode = ['#20272D', '#2C3639', '#40534C', '#677D6A', '#D6BD98', '#FFEACF']\n",
-    "lightmode = ['#FFF8E8', '#FFEACF','#EDC775FF', '#E09351FF', '#1A3636', '#20272D']\n",
-    "\n",
-    "# Use the palette for the dark theme\n",
-    "dark_theme = {\n",
-    "    'background': \"#20272D\",  # Darkest color for the background\n",
-    "    'text': darkmode[5],  # Lightest color for the text\n",
-    "    'secondary_text': darkmode[4],  # For secondary text (optional)\n",
-    "    'highlight': darkmode[3],  # For highlighted elements (optional)\n",
-    "}\n",
-    "light_theme = {\n",
-    "    'background': lightmode[0],  # lightest color for the background\n",
-    "    'text': lightmode[5],  # Darkest color for the text\n",
-    "    'secondary_text': lightmode[2],  # For secondary text (optional)\n",
-    "    'highlight': lightmode[3],  # For highlighted elements (optional)\n",
-    "}\n",
-    "\n",
-    "\n",
-    "# Sidebar Layout (static layout)\n",
-    "sidebar = html.Div(\n",
-    "    [\n",
-    "        html.H4(\"DaMaDi\", id='sidebar-title', style={'align': 'center', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400'}),\n",
-    "        html.Hr(style={\n",
-    "            'border': '1px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.7'}),\n",
-    "        html.P(\"plots & graphs:\", id='plots-text', style={'textAlign': 'center', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400'}),\n",
-    "        dcc.Dropdown(\n",
-    "            id='page-selector-dropdown',\n",
-    "            options=[\n",
-    "                {'label': 'static', 'value': '/page-1'},\n",
-    "                {'label': 'interactive', 'value': '/page-2'},\n",
-    "            ],\n",
-    "            value='/page-2',  # default value\n",
-    "            className='custom-dropdown',\n",
-    "        ),\n",
-    "        html.Hr(style={\n",
-    "            'border': '1px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.7'}),\n",
-    "        # Light/Dark Mode Toggle\n",
-    "        html.P(\"mode:\", id='theme-text', style={'margin': '20px auto', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400'}),\n",
-    "        daq.ToggleSwitch(\n",
-    "            id='theme-toggle-switch',\n",
-    "            value=True,  # Default is light theme (False)\n",
-    "            color='#EDC775FF',  # Color of the switch\n",
-    "            style={'marginBottom': '15px'}\n",
-    "        ),\n",
-    "        html.Label(\"light\", id='light-mode-label', style={'marginRight': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'marginLeft': '10px'}),\n",
-    "        html.Label(\"dark\", id='dark-mode-label', style={'marginRight': '110px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'marginLeft': '15px'}),\n",
-    "        html.Hr(style={\n",
-    "            'border': '1px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.7'}),\n",
-    "    ],\n",
-    "    id='sidebar',  # Adding an ID to match the custom CSS\n",
-    "    style={'width': '15%', 'position': 'fixed', 'height': '100%'}\n",
-    ")\n",
-    "# Header with sticky style applied in custom_styles.css\n",
-    "header = html.Div(\n",
-    "    html.H1(\"d a r k . m a t t e r . r e s e a r c h . d a t a\", id='header-title')\n",
-    ")\n",
-    "\n",
-    "def page_1_layout(theme):\n",
-    "    return html.Div([\n",
-    "        html.Hr(style={\n",
-    "            'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),\n",
-    "\n",
-    "        html.H2('top 20 dark matter models (paper count)', style={\n",
-    "            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),\n",
-    "\n",
-    "        # Dynamic Image for top 20 DM models\n",
-    "        html.Img(\n",
-    "            id='top20-dm-models-img',  # Unique ID\n",
-    "            src='assets/top20_dm_models_grid.svg',  # Default source (dark mode)\n",
-    "            style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}\n",
-    "        ),\n",
-    "\n",
-    "        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),\n",
-    "\n",
-    "        html.H2('prevalence of dark matter models in papers over time', style={\n",
-    "            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),\n",
-    "\n",
-    "        # Dynamic Image for prevalence of dark matter models\n",
-    "        html.Img(\n",
-    "            id='pop-dm-models-img',  # Unique ID for this image\n",
-    "            src='/assets/pop_dm_models.svg',  # Default source (dark mode)\n",
-    "            style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}\n",
-    "        ),\n",
-    "\n",
-    "        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),\n",
-    "\n",
-    "        html.H2('mass range coverage for dark matter models', style={\n",
-    "            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),\n",
-    "\n",
-    "        # Dynamic Image for mass range coverage of dark matter models\n",
-    "        html.Img(\n",
-    "            id='mass-dm-models-img',  # Unique ID for this image\n",
-    "            src='/assets/mass_dm_models.svg',  # Default source (dark mode)\n",
-    "            style={'width': '100%', 'height': 'auto'}\n",
-    "        ),\n",
-    "    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': theme['background']})\n",
-    "\n",
-    "\n",
-    "def page_2_layout(theme):\n",
-    "    return html.Div([\n",
-    "        html.H2(\"Interactive Plots: Dark Matter Models\", style={\n",
-    "            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),\n",
-    "\n",
-    "        # Center the Sunburst plot (dynamic plot with ID)\n",
-    "        html.Div(\n",
-    "            dcc.Graph(id='sunburst-dm-models'),  # Use ID for the sunburst plot\n",
-    "            style={'display': 'flex', 'justifyContent': 'center'}\n",
-    "        ),\n",
-    "        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),\n",
-    "\n",
-    "        # Center the Treemap plot (dynamic plot with ID)\n",
-    "        html.Div(\n",
-    "            dcc.Graph(id='treemap-dm-models'),  # Use ID for the treemap plot\n",
-    "            style={'display': 'flex', 'justifyContent': 'center'}\n",
-    "        ),\n",
-    "        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),\n",
-    "    ], style={'maxWidth': '1600px', 'margin': '0 auto', 'padding': '20px', 'backgroundColor': theme['background']})\n",
-    "\n",
-    "\n",
-    "app.layout = html.Div(id='main-div', style={'fontFamily': 'DejaVu Sans Mono'}, children=[\n",
-    "    dcc.Location(id='url', refresh=False),  # Track the URL for page routing\n",
-    "    header,\n",
-    "    sidebar,  # Static sidebar\n",
-    "    html.Div(id='page-content', style={'marginTop': '80px'}),  # Dynamic content area\n",
-    "])\n",
-    "\n",
-    "@app.callback(\n",
-    "    Output('url', 'pathname'),  # Update the URL based on dropdown selection\n",
-    "    Input('page-selector-dropdown', 'value')  # Listen for dropdown value change\n",
-    ")\n",
-    "def update_url_from_dropdown(selected_page):\n",
-    "    return selected_page\n",
-    "\n",
-    "\n",
-    "@app.callback(\n",
-    "    [Output('page-content', 'children'),\n",
-    "     Output('main-div', 'style'),\n",
-    "     Output('header-title', 'style'),\n",
-    "     Output('sidebar', 'style'),\n",
-    "     Output('sidebar-title', 'style'),\n",
-    "     Output('plots-text', 'style'),\n",
-    "     Output('theme-text', 'style'),\n",
-    "     Output('page-selector-dropdown', 'style'),\n",
-    "     Output('light-mode-label', 'style'),\n",
-    "     Output('dark-mode-label', 'style')],\n",
-    "    [Input('url', 'pathname'),  # URL change (page routing)\n",
-    "     Input('theme-toggle-switch', 'value')]  # Theme change\n",
-    ")\n",
-    "def display_page(pathname, is_dark_mode):\n",
-    "    # Apply the selected theme\n",
-    "    theme = dark_theme if is_dark_mode else light_theme\n",
-    "\n",
-    "    # Switch between pages based on the URL pathname\n",
-    "    if pathname == '/page-1':\n",
-    "        page_layout = page_1_layout(theme)\n",
-    "    elif pathname == '/page-2':\n",
-    "        page_layout = page_2_layout(theme)\n",
-    "    else:\n",
-    "        # Default to page 1 layout if no specific path is given\n",
-    "        page_layout = page_1_layout(theme)\n",
-    "\n",
-    "    return [\n",
-    "        page_layout,\n",
-    "        {'backgroundColor': theme['background'], 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono'},  # main-div\n",
-    "        {'textAlign': 'center', 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400',\n",
-    "         'backgroundColor': theme['background']},  # header-title with background color\n",
-    "        {'width': '15%', 'position': 'fixed', 'height': '90%', 'backgroundColor': theme['background']},  # sidebar\n",
-    "        {'marginLeft': '20px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # sidebar-title\n",
-    "        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # plots-text\n",
-    "        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # theme-text\n",
-    "        {'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'backgroundColor': theme['background'],\n",
-    "         'color': theme['text']},  # dropdown styling\n",
-    "        {'marginLeft': '30px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # light-mode label\n",
-    "        {'marginLeft': '100px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # dark-mode-label\n",
-    "    ]\n",
-    "\n",
-    "@app.callback(\n",
-    "    [Output('sunburst-dm-models', 'figure'),  # Sunburst plot update\n",
-    "     Output('treemap-dm-models', 'figure')],  # Treemap plot update\n",
-    "    Input('theme-toggle-switch', 'value')  # Theme toggle switch input\n",
-    ")\n",
-    "def update_plots(is_dark_mode):\n",
-    "\n",
-    "    # Set common plot properties (adjustable based on theme)\n",
-    "    if is_dark_mode:\n",
-    "        bg_color = \"#20272d\"\n",
-    "        text_color = \"#ffeacf\"\n",
-    "        hover_bgcolor = \"#20272d\"\n",
-    "        hover_text_color = \"#ffeacf\"\n",
-    "    else:\n",
-    "        bg_color = \"#FFF8E8\"\n",
-    "        text_color = \"#232323\"\n",
-    "        hover_bgcolor = \"#FFF8E8\"\n",
-    "        hover_text_color = \"#232323\"\n",
-    "\n",
-    "    # Sunburst plot (dynamic)\n",
-    "    fig_sunburst = px.sunburst(\n",
-    "        paper_counts,\n",
-    "        path=['dm_category', 'dm_models'],\n",
-    "        values='paper_count',\n",
-    "        color_discrete_sequence=spektrum,  # Assuming spektrum is defined\n",
-    "    )\n",
-    "    fig_sunburst.update_layout(\n",
-    "        font=dict(family=\"DejaVu Sans Mono\", color=text_color),\n",
-    "        margin=dict(t=50, l=25, r=25, b=25),\n",
-    "        width=550, height=550,\n",
-    "        title_font_size=18,\n",
-    "        plot_bgcolor=bg_color,\n",
-    "        paper_bgcolor=bg_color,\n",
-    "        hoverlabel=dict(\n",
-    "            bgcolor=hover_bgcolor, font_size=14, font_family=\"DejaVu Sans Mono\", font_color=hover_text_color\n",
-    "        ),\n",
-    "    )\n",
-    "    fig_sunburst.update_traces(\n",
-    "        textinfo=\"label+percent entry\",\n",
-    "        insidetextorientation=\"radial\",\n",
-    "        textfont=dict(size=14, color=text_color)\n",
-    "    )\n",
-    "\n",
-    "    # Treemap plot (dynamic)\n",
-    "    fig_treemap = px.treemap(\n",
-    "        paper_counts,\n",
-    "        path=['dm_category', 'dm_models'],\n",
-    "        values='paper_count',\n",
-    "        color='paper_count',\n",
-    "        color_continuous_scale='ylgn',\n",
-    "    )\n",
-    "    fig_treemap.update_layout(\n",
-    "        font=dict(family=\"DejaVu Sans Mono\", color=text_color),\n",
-    "        margin=dict(t=50, l=25, r=25, b=25),\n",
-    "        width=800, height=500,\n",
-    "        title_font_size=18,\n",
-    "        plot_bgcolor=bg_color,\n",
-    "        paper_bgcolor=bg_color,\n",
-    "        hoverlabel=dict(\n",
-    "            bgcolor=hover_bgcolor, font_size=14, font_family=\"DejaVu Sans Mono\", font_color=hover_text_color\n",
-    "        ),\n",
-    "    )\n",
-    "\n",
-    "    # Return both figures for the Sunburst and Treemap plots\n",
-    "    return fig_sunburst, fig_treemap\n",
-    "\n",
-    "\n",
-    "\n",
-    "def display_page(pathname, is_dark_mode):\n",
-    "    # Apply the selected theme\n",
-    "    theme = dark_theme if is_dark_mode else light_theme\n",
-    "\n",
-    "    # Switch between pages based on the URL pathname\n",
-    "    if pathname == '/page-1':\n",
-    "        page_layout = page_1_layout(theme)\n",
-    "    elif pathname == '/page-2':\n",
-    "        page_layout = page_2_layout(theme)\n",
-    "    else:\n",
-    "        # Default to page 1 layout if no specific path is given\n",
-    "        page_layout = page_1_layout(theme)\n",
-    "\n",
-    "    return [\n",
-    "        page_layout,\n",
-    "        {'backgroundColor': theme['background'], 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono'},  # main-div\n",
-    "        {'textAlign': 'center', 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400',\n",
-    "         'backgroundColor': theme['background']},  # header-title with background color\n",
-    "        {'width': '15%', 'position': 'fixed', 'height': '90%', 'backgroundColor': theme['background']},  # sidebar\n",
-    "        {'marginLeft': '20px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # sidebar-title\n",
-    "        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # plots-text\n",
-    "        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # theme-text\n",
-    "        {'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'backgroundColor': theme['background'],\n",
-    "         'color': theme['text']},  # dropdown styling\n",
-    "        {'marginLeft': '30px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # light-mode label\n",
-    "        {'marginLeft': '100px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # dark-mode-label\n",
-    "    ]\n",
-    "\n",
-    "# Callback to update the image source when the theme is toggled\n",
-    "@app.callback(\n",
-    "    [Output('top20-dm-models-img', 'src'),  # Update the 'src' of top 20 DM models image\n",
-    "     Output('pop-dm-models-img', 'src'),    # Update the 'src' of prevalence of DM models image\n",
-    "     Output('mass-dm-models-img', 'src')],  # Update the 'src' of mass range coverage image\n",
-    "    Input('theme-toggle-switch', 'value')  # Listen for changes in the theme toggle\n",
-    ")\n",
-    "def update_image_sources(is_dark_mode):\n",
-    "    # Define file paths for dark and light mode\n",
-    "    if is_dark_mode:\n",
-    "        top20_src = 'assets/top20_dm_models_grid.svg'\n",
-    "        pop_src = 'assets/pop_dm_models.svg'\n",
-    "        mass_src = 'assets/mass_dm_models.svg'\n",
-    "    else:\n",
-    "        top20_src = 'assets/top20_dm_models_grid_light.svg'\n",
-    "        pop_src = 'assets/pop_dm_models_light.svg'\n",
-    "        mass_src = 'assets/mass_dm_models_light.svg'\n",
-    "\n",
-    "    # Return updated sources for each image\n",
-    "    return top20_src, pop_src, mass_src\n",
-    "\n",
-    "\n",
-    "if __name__ == '__main__':\n",
-    "    # Get the PORT environment variable or default to 8050 if running locally\n",
-    "    port = int(os.environ.get('PORT', 8052))\n",
-    "    # Run the app on host 0.0.0.0 and the specified port\n",
-    "    app.run_server(debug=False, host='0.0.0.0', port=port)"
-   ],
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "<IPython.lib.display.IFrame at 0x2e652bce0>"
-      ],
-      "text/html": [
-       "\n",
-       "        <iframe\n",
-       "            width=\"100%\"\n",
-       "            height=\"650\"\n",
-       "            src=\"http://0.0.0.0:8052/\"\n",
-       "            frameborder=\"0\"\n",
-       "            allowfullscreen\n",
-       "            \n",
-       "        ></iframe>\n",
-       "        "
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "execution_count": 10
-  },
-  {
-   "metadata": {},
-   "cell_type": "code",
-   "outputs": [],
-   "execution_count": None,
-   "source": "",
-   "id": "5fb29abb113441b1"
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 2
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython2",
-   "version": "2.7.6"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[ ]:
+
+
+import dash
+from dash import dcc, html, Input, Output
+import dash_daq as daq  # Importing dash_daq for ToggleSwitch
+import plotly.express as px
+import pandas as pd
+import os
+df_unique = pd.read_csv('assets/df_unique.csv')
+paper_counts = pd.read_csv('assets/paper_counts.csv')
+
+spektrum = ['#F2A604', '#ED90AE', '#59A689', '#5DAA53', '#0A4E6B', '#232323']
+
+# Initialize the Dash app
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
+
+server = app.server
+
+light_sequential = ['#e09351', '#e4a671', '#e7b890', '#ebcbb0', '#efded0', '#f2f0ef']
+dark_sequential = ['#292523', '#4e3b2c', '#725135', '#97673f', '#bb7d48', '#e09351']
+
+# Define a custom color palette
+darkmode = ['#20272D', '#2C3639', '#40534C', '#677D6A', '#D6BD98', '#FFEACF']
+lightmode = ['#FFF8E8', '#FFEACF','#EDC775FF', '#E09351FF', '#1A3636', '#20272D']
+
+# Use the palette for the dark theme
+dark_theme = {
+    'background': "#20272D",  # Darkest color for the background
+    'text': darkmode[5],  # Lightest color for the text
+    'secondary_text': darkmode[4],  # For secondary text (optional)
+    'highlight': darkmode[3],  # For highlighted elements (optional)
 }
+light_theme = {
+    'background': lightmode[0],  # lightest color for the background
+    'text': lightmode[5],  # Darkest color for the text
+    'secondary_text': lightmode[2],  # For secondary text (optional)
+    'highlight': lightmode[3],  # For highlighted elements (optional)
+}
+
+
+# Sidebar Layout (static layout)
+sidebar = html.Div(
+    [
+        html.H4("DaMaDi", id='sidebar-title', style={'align': 'center', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400'}),
+        html.Hr(style={
+            'border': '1px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.7'}),
+        html.P("plots & graphs:", id='plots-text', style={'textAlign': 'center', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400'}),
+        dcc.Dropdown(
+            id='page-selector-dropdown',
+            options=[
+                {'label': 'static', 'value': '/page-1'},
+                {'label': 'interactive', 'value': '/page-2'},
+            ],
+            value='/page-2',  # default value
+            className='custom-dropdown',
+        ),
+        html.Hr(style={
+            'border': '1px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.7'}),
+        # Light/Dark Mode Toggle
+        html.P("mode:", id='theme-text', style={'margin': '20px auto', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400'}),
+        daq.ToggleSwitch(
+            id='theme-toggle-switch',
+            value=True,  # Default is light theme (False)
+            color='#EDC775FF',  # Color of the switch
+            style={'marginBottom': '15px'}
+        ),
+        html.Label("light", id='light-mode-label', style={'marginRight': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'marginLeft': '10px'}),
+        html.Label("dark", id='dark-mode-label', style={'marginRight': '110px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'marginLeft': '15px'}),
+        html.Hr(style={
+            'border': '1px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.7'}),
+    ],
+    id='sidebar',  # Adding an ID to match the custom CSS
+    style={'width': '15%', 'position': 'fixed', 'height': '100%'}
+)
+# Header with sticky style applied in custom_styles.css
+header = html.Div(
+    html.H1("d a r k . m a t t e r . r e s e a r c h . d a t a", id='header-title')
+)
+
+def page_1_layout(theme):
+    return html.Div([
+        html.Hr(style={
+            'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+
+        html.H2('top 20 dark matter models (paper count)', style={
+            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),
+
+        # Dynamic Image for top 20 DM models
+        html.Img(
+            id='top20-dm-models-img',  # Unique ID
+            src='assets/top20_dm_models_grid.svg',  # Default source (dark mode)
+            style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}
+        ),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+
+        html.H2('prevalence of dark matter models in papers over time', style={
+            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),
+
+        # Dynamic Image for prevalence of dark matter models
+        html.Img(
+            id='pop-dm-models-img',  # Unique ID for this image
+            src='/assets/pop_dm_models.svg',  # Default source (dark mode)
+            style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}
+        ),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+
+        html.H2('mass range coverage for dark matter models', style={
+            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),
+
+        # Dynamic Image for mass range coverage of dark matter models
+        html.Img(
+            id='mass-dm-models-img',  # Unique ID for this image
+            src='/assets/mass_dm_models.svg',  # Default source (dark mode)
+            style={'width': '100%', 'height': 'auto'}
+        ),
+    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': theme['background']})
+
+
+def page_2_layout(theme):
+    return html.Div([
+        html.H2("Interactive Plots: Dark Matter Models", style={
+            'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text'], 'textAlign': 'center'}),
+
+        # Center the Sunburst plot (dynamic plot with ID)
+        html.Div(
+            dcc.Graph(id='sunburst-dm-models'),  # Use ID for the sunburst plot
+            style={'display': 'flex', 'justifyContent': 'center'}
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
+
+        # Center the Treemap plot (dynamic plot with ID)
+        html.Div(
+            dcc.Graph(id='treemap-dm-models'),  # Use ID for the treemap plot
+            style={'display': 'flex', 'justifyContent': 'center'}
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
+    ], style={'maxWidth': '1600px', 'margin': '0 auto', 'padding': '20px', 'backgroundColor': theme['background']})
+
+
+app.layout = html.Div(id='main-div', style={'fontFamily': 'DejaVu Sans Mono'}, children=[
+    dcc.Location(id='url', refresh=False),  # Track the URL for page routing
+    header,
+    sidebar,  # Static sidebar
+    html.Div(id='page-content', style={'marginTop': '80px'}),  # Dynamic content area
+])
+
+@app.callback(
+    Output('url', 'pathname'),  # Update the URL based on dropdown selection
+    Input('page-selector-dropdown', 'value')  # Listen for dropdown value change
+)
+def update_url_from_dropdown(selected_page):
+    return selected_page
+
+
+@app.callback(
+    [Output('page-content', 'children'),
+     Output('main-div', 'style'),
+     Output('header-title', 'style'),
+     Output('sidebar', 'style'),
+     Output('sidebar-title', 'style'),
+     Output('plots-text', 'style'),
+     Output('theme-text', 'style'),
+     Output('page-selector-dropdown', 'style'),
+     Output('light-mode-label', 'style'),
+     Output('dark-mode-label', 'style')],
+    [Input('url', 'pathname'),  # URL change (page routing)
+     Input('theme-toggle-switch', 'value')]  # Theme change
+)
+def display_page(pathname, is_dark_mode):
+    # Apply the selected theme
+    theme = dark_theme if is_dark_mode else light_theme
+
+    # Switch between pages based on the URL pathname
+    if pathname == '/page-1':
+        page_layout = page_1_layout(theme)
+    elif pathname == '/page-2':
+        page_layout = page_2_layout(theme)
+    else:
+        # Default to page 1 layout if no specific path is given
+        page_layout = page_1_layout(theme)
+
+    return [
+        page_layout,
+        {'backgroundColor': theme['background'], 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono'},  # main-div
+        {'textAlign': 'center', 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400',
+         'backgroundColor': theme['background']},  # header-title with background color
+        {'width': '15%', 'position': 'fixed', 'height': '90%', 'backgroundColor': theme['background']},  # sidebar
+        {'marginLeft': '20px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # sidebar-title
+        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # plots-text
+        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # theme-text
+        {'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'backgroundColor': theme['background'],
+         'color': theme['text']},  # dropdown styling
+        {'marginLeft': '30px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # light-mode label
+        {'marginLeft': '100px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # dark-mode-label
+    ]
+
+@app.callback(
+    [Output('sunburst-dm-models', 'figure'),  # Sunburst plot update
+     Output('treemap-dm-models', 'figure')],  # Treemap plot update
+    Input('theme-toggle-switch', 'value')  # Theme toggle switch input
+)
+def update_plots(is_dark_mode):
+
+    # Set common plot properties (adjustable based on theme)
+    if is_dark_mode:
+        bg_color = "#20272d"
+        text_color = "#ffeacf"
+        hover_bgcolor = "#20272d"
+        hover_text_color = "#ffeacf"
+    else:
+        bg_color = "#FFF8E8"
+        text_color = "#232323"
+        hover_bgcolor = "#FFF8E8"
+        hover_text_color = "#232323"
+
+    # Sunburst plot (dynamic)
+    fig_sunburst = px.sunburst(
+        paper_counts,
+        path=['dm_category', 'dm_models'],
+        values='paper_count',
+        color_discrete_sequence=spektrum,  # Assuming spektrum is defined
+    )
+    fig_sunburst.update_layout(
+        font=dict(family="DejaVu Sans Mono", color=text_color),
+        margin=dict(t=50, l=25, r=25, b=25),
+        width=550, height=550,
+        title_font_size=18,
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color,
+        hoverlabel=dict(
+            bgcolor=hover_bgcolor, font_size=14, font_family="DejaVu Sans Mono", font_color=hover_text_color
+        ),
+    )
+    fig_sunburst.update_traces(
+        textinfo="label+percent entry",
+        insidetextorientation="radial",
+        textfont=dict(size=14, color=text_color)
+    )
+
+    # Treemap plot (dynamic)
+    fig_treemap = px.treemap(
+        paper_counts,
+        path=['dm_category', 'dm_models'],
+        values='paper_count',
+        color='paper_count',
+        color_continuous_scale='ylgn',
+    )
+    fig_treemap.update_layout(
+        font=dict(family="DejaVu Sans Mono", color=text_color),
+        margin=dict(t=50, l=25, r=25, b=25),
+        width=800, height=500,
+        title_font_size=18,
+        plot_bgcolor=bg_color,
+        paper_bgcolor=bg_color,
+        hoverlabel=dict(
+            bgcolor=hover_bgcolor, font_size=14, font_family="DejaVu Sans Mono", font_color=hover_text_color
+        ),
+    )
+
+    # Return both figures for the Sunburst and Treemap plots
+    return fig_sunburst, fig_treemap
+
+
+
+def display_page(pathname, is_dark_mode):
+    # Apply the selected theme
+    theme = dark_theme if is_dark_mode else light_theme
+
+    # Switch between pages based on the URL pathname
+    if pathname == '/page-1':
+        page_layout = page_1_layout(theme)
+    elif pathname == '/page-2':
+        page_layout = page_2_layout(theme)
+    else:
+        # Default to page 1 layout if no specific path is given
+        page_layout = page_1_layout(theme)
+
+    return [
+        page_layout,
+        {'backgroundColor': theme['background'], 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono'},  # main-div
+        {'textAlign': 'center', 'color': theme['text'], 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400',
+         'backgroundColor': theme['background']},  # header-title with background color
+        {'width': '15%', 'position': 'fixed', 'height': '90%', 'backgroundColor': theme['background']},  # sidebar
+        {'marginLeft': '20px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # sidebar-title
+        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # plots-text
+        {'marginLeft': '30px','fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # theme-text
+        {'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'backgroundColor': theme['background'],
+         'color': theme['text']},  # dropdown styling
+        {'marginLeft': '30px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # light-mode label
+        {'marginLeft': '100px', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': theme['text']},  # dark-mode-label
+    ]
+
+# Callback to update the image source when the theme is toggled
+@app.callback(
+    [Output('top20-dm-models-img', 'src'),  # Update the 'src' of top 20 DM models image
+     Output('pop-dm-models-img', 'src'),    # Update the 'src' of prevalence of DM models image
+     Output('mass-dm-models-img', 'src')],  # Update the 'src' of mass range coverage image
+    Input('theme-toggle-switch', 'value')  # Listen for changes in the theme toggle
+)
+def update_image_sources(is_dark_mode):
+    # Define file paths for dark and light mode
+    if is_dark_mode:
+        top20_src = 'assets/top20_dm_models_grid.svg'
+        pop_src = 'assets/pop_dm_models.svg'
+        mass_src = 'assets/mass_dm_models.svg'
+    else:
+        top20_src = 'assets/top20_dm_models_grid_light.svg'
+        pop_src = 'assets/pop_dm_models_light.svg'
+        mass_src = 'assets/mass_dm_models_light.svg'
+
+    # Return updated sources for each image
+    return top20_src, pop_src, mass_src
+
+
+if __name__ == '__main__':
+    # Get the PORT environment variable or default to 8050 if running locally
+    port = int(os.environ.get('PORT', 8052))
+    # Run the app on host 0.0.0.0 and the specified port
+    app.run_server(debug=False, host='0.0.0.0', port=port)
+
