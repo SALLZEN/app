@@ -1,0 +1,81 @@
+/* Custom styles for the sticky header */
+#header-title {
+    position: fixed;
+    top: 0;
+    z-index: 1000; /* Ensure it stays above other content */
+    background-color: #FFF8E8; /* Light background */
+    color: #292523; /* Dark text color */
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-weight: 400;
+    padding: 45px;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+#network-graph {
+    border: 1px solid red;  /* Add a visible border to see the container */
+    width: 100%;  /* Ensure it takes the full width */
+    height: 600px;  /* Set an explicit height */
+    position: relative;  /* Ensure it's positioned correctly */
+    z-index: 1;  /* Ensure it's not obscured by other elements */
+}
+
+/* Adding margin-top to the page content to avoid overlap with the fixed header */
+#page-content {
+    margin-top: 140px;  /* Adjust this to match the height of your header */
+
+}
+/* custom_styles.css */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Optional: Add styles to ensure body content doesn't overlap the sticky header */
+body {
+    padding-top: 40px; /* Adjust this value based on your header height */
+}
+
+/* Sidebar styles */
+#sidebar {
+    position: fixed;
+    width: 15%;
+    height: 100%;
+    padding: 20px;
+    background-color: #FFF8E8; /* Example background color */
+}
+/* Dropdown styling */
+.custom-dropdown {
+    background-color: inherit !important;  /* Inherit from the theme */
+    color: inherit !important;  /* Inherit text color from the theme */
+    width: 80%;
+    margin: 10px auto;  /* This will center the element horizontally */
+    display: block;  /* Ensure it's treated as a block-level element */
+    /*text-align: center;   Align text inside the dropdown */
+}
+
+/* Dropdown menu (for light/dark mode) */
+.Select-menu-outer {
+    background-color: inherit !important;
+    color: inherit !important;
+}
+
+/* Style for the placeholder and selected option when the dropdown is closed */
+.custom-dropdown .Select-value-label {
+    color: inherit !important;  /* Make sure it inherits the theme's color */
+}
+
+/* Style the dropdown arrow (optional, for a consistent look) */
+.custom-dropdown .Select-arrow-zone {
+    color: inherit !important;
+}
+
+/* Dropdown styling when it's open */
+.custom-dropdown .Select-menu-outer {
+    background-color: inherit !important;  /* Inherit from the theme */
+    color: inherit !important;  /* Inherit text color from the theme */
+}
