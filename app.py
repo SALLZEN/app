@@ -1,26 +1,6 @@
 {
  "cells": [
   {
-   "metadata": {
-    "ExecuteTime": {
-     "end_time": "2024-10-14T19:33:20.476463Z",
-     "start_time": "2024-10-14T19:33:15.336255Z"
-    }
-   },
-   "cell_type": "code",
-   "source": [
-    "df = pd.read_csv('assets/dark_matter_models.csv')\n",
-    "# Step 1: Group by 'dm_category' and 'dm_models' to count unique papers (bibcodes)\n",
-    "df_unique = df.drop_duplicates(subset=['bibcode', 'dm_models', 'dm_category'])\n",
-    "df_unique.to_csv('assets/df_unique.csv', index=False)\n",
-    "paper_counts = df_unique.groupby(['dm_category', 'dm_models']).size().reset_index(name='paper_count')\n",
-    "paper_counts.to_csv('assets/paper_counts.csv', index=False)"
-   ],
-   "id": "a4a7600573b35231",
-   "outputs": [],
-   "execution_count": 8
-  },
-  {
    "cell_type": "code",
    "id": "initial_id",
    "metadata": {
