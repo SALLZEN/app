@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[11]:
+
+
+
+
+
 # In[ ]:
 
 
@@ -10,7 +16,19 @@ import dash_daq as daq  # Importing dash_daq for ToggleSwitch
 import plotly.express as px
 import pandas as pd
 import os
-df_unique = pd.read_csv('assets/df_unique.csv')
+import requests
+
+
+# Google Drive file ID
+file_id = '16lramFSvU4lzshUUMskGzfAi488IibiO'
+download_url = f'https://drive.google.com/uc?export=download&id={file_id}'
+
+# Download the file
+response = requests.get(download_url)
+open('df_unique.csv', 'wb').write(response.content)
+
+# Load the CSV into a DataFrame
+df_unique = pd.read_csv('df_unique.csv')
 paper_counts = pd.read_csv('assets/paper_counts.csv')
 
 spektrum = ['#F2A604', '#ED90AE', '#59A689', '#5DAA53', '#0A4E6B', '#232323']
