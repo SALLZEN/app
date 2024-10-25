@@ -192,6 +192,7 @@ sidebar = html.Div(
                 {'label': 'Metrics', 'value': '/page-12'},
                 {'label': 'Authors', 'value': '/page-13'},
                 {'label': 'arXiv', 'value': '/page-14'},
+                {'label': 'Keywords', 'value': '/page-15'},
             ],
             value='/page-1',  # Default value
             className='custom-dropdown',  # Apply custom CSS class
@@ -589,10 +590,77 @@ def page_13_layout():
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 def page_14_layout():
     return html.Div([
-# PLOT 1
+        # PLOT 1
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
 
         html.H2('arXiv', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+        }),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        
+        html.H1('1.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%'
+        }),
+        
+        html.H3('Metrics for arXiv representation', style={
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontWeight': '400',
+            'color': dark_theme['text'],
+            'textAlign': 'left', 
+            'marginLeft': '10%'  
+        }),
+        
+        html.P(
+            'Metric data based on a paper’s arXiv classification',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        
+        # Center the images
+        html.Img(id='metrics-vs-arXiv-img', src='assets/metrics_vs_arXiv_category.svg', style={
+            'width': '80%', 
+            'height': 'auto', 
+            'margin': '0 auto',  # Centers image horizontally
+            'display': 'block',  # Centers image within its block
+            'marginBottom': '20px'
+        }),
+        
+        html.Img(id='metrics-vs-arXiv_cat', src='assets/metrics_vs_arXiv_category.svg', style={
+            'width': '80%', 
+            'height': 'auto', 
+            'margin': '0 auto',  # Centers image horizontally
+            'display': 'block',  # Centers image within its block
+            'marginBottom': '20px'
+        }),
+        
+    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
+
+
+def page_15_layout():
+    return html.Div([
+# PLOT 1
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+
+        html.H2('Keyword', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -609,7 +677,7 @@ def page_14_layout():
             'fontSize': '3em',
             'marginLeft': '10%'  # Optional alignment for indentation
         }),
-        html.H3('Metrics for arXiv representation', style={
+        html.H3('Keyword by citations', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -617,7 +685,7 @@ def page_14_layout():
             'marginLeft': '10%'  
         }),
         html.P(
-            'Metric data based on a papers arXiv classification',
+            'Top 20 keywords based on citations',
             style={
                 'fontFamily': 'DejaVu Sans Mono',
                 'color': dark_theme['text'], 
@@ -630,7 +698,7 @@ def page_14_layout():
                 'margin': '0 auto',
             }
         ),
-        html.Img(id='metrics-vs-arXiv-img', src='assets/metrics_vs_arXiv_category.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Img(id='keyword-vs-citations-img', src='assets/keyword_vs_citations.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_about_layout():
@@ -691,6 +759,8 @@ def display_page(pathname):
         return page_13_layout()
     elif pathname == '/page-14':
         return page_14_layout()
+    elif pathname == '/page-15':
+        return page_15_layout()
     elif pathname == '/about':
         return page_about_layout()
 
