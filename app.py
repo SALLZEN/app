@@ -8,6 +8,9 @@ import pandas as pd
 import os
 import requests
 import random
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
 # Google Drive file ID
 file_id = '16lramFSvU4lzshUUMskGzfAi488IibiO'
 skeleton_id = '1WQgTgy5TXD3fDkFtJks5cxo75JUeO1m6'
@@ -27,64 +30,7 @@ paper_counts = pd.read_csv('assets/paper_counts.csv')
 
 
 # Plot codes:
-# downloads vs. citations                                                                                           -> PLOT <-
-# Define custom color
-custom_color = '#F2A604'
-scatter_fig = px.scatter(
-    df,
-    x='downloads',
-    y='citations',
-    hover_data=['title', 'first_author', 'year'],
-    title='Relationship Between Citations and Downloads',
-    labels={'downloads': 'Downloads', 'citations': 'Citations'},
-    opacity=0.5,
-)
-scatter_fig.update_layout(
-    font=dict(
-        family="DejaVu Sans Mono",
-        size=12,
-    ),
-    title_font=dict(
-        family="DejaVu Sans Mono",
-        size=18,
-        color='#fff8e8',
-    ),
-    plot_bgcolor='#20272d',
-    paper_bgcolor='#20272d',
-    width=1000,
-    height=700,
-    xaxis=dict(
-        title_font=dict(color='#fff8e8'),
-        tickfont=dict(color='#fff8e8'),
-        gridcolor='rgba(255, 255, 255, 0.2)',
-        linecolor='rgba(255, 255, 255, 0.5)',
-        type='log'
-    ),
-    yaxis=dict(
-        title_font=dict(color='#fff8e8'),
-        tickfont=dict(color='#fff8e8'),
-        gridcolor='rgba(255, 255, 255, 0.2)',
-        linecolor='rgba(255, 255, 255, 0.5)',
-        type='log',
-    ),
-    hoverlabel=dict(
-        bgcolor='#333333',
-        font_size=12,
-        font_family="DejaVu Sans Mono",
-        font_color='#FFF8E8'
-    )
-)
-scatter_fig.update_traces(
-    marker=dict(
-        color=custom_color,
-        size=7,
-        line=dict(
-            width=0.2,
-            color='#20272d'
-        )
-    )
-)
-
+#                                                                                          -> PLOT <-
 #dark matter models & research trends
 spektrum = ['#FFF8E8', '#FCDCA4', '#FDBF7F','#FCB57A', '#EEB57C', '#EE9D6D', '#ECD305',  '#FCC405', '#ECB13B','#F2A604','#DC8334', '#CE781F', '#EB7B13', '#E46A26', '#DC670B','#EC5B1D','#B64810', '#965C02',  '#805C08', '#784304','#893B04','#943D0C', '#8E4709','#ED90AE',  '#F0817E', '#9E6171', '#D58487','#976264', '#A5D5CA',  '#A4D4AC', '#59A689','#56AA93','#076166', '#AED3D4',  '#65D4CC', '#5E9E95', '#314D5A','#0A4E6B', '#343E49','#C3CC9C', '#89A85A',  '#5DAA53', '#0D7249', '#3C5531','#746C0B', '#41502B']
 random.shuffle(spektrum)
@@ -157,6 +103,456 @@ fig_1.update_xaxes(
 )
 fig_1.for_each_annotation(lambda a: a.update(textangle=90, font=dict(color='#fff8e8')))
 
+# most cited titles by arXiv
+top_titles = df.nlargest(50, 'citations')
+flat_data = top_titles.explode(['arxiv_category', 'citations']).reset_index(drop=True)
+
+# Replace None or NaN in 'arxiv_category' with a placeholder
+flat_data['arxiv_category'] = flat_data['arxiv_category'].fillna('Unknown')
+
+# Create a combined column for the title and citations for easier labeling
+flat_data['title_citation'] = flat_data['title'] + " (" + flat_data['citations'].astype(str) + " citations)"
+
+# Sunburst plot where each arxiv_category has an outer ring of individual titles
+fig_3 = px.sunburst(
+    flat_data,
+    path=['arxiv_category', 'title_citation'],
+    values='citations',
+    #title="Top 50 Most Cited Titles Grouped by arxiv_category",
+    color='arxiv_category',  # Color by category for easy distinction
+    color_discrete_sequence=px.colors.qualitative.Pastel  # Soft color palette for clarity
+)
+
+# Customize layout with larger size and styling
+fig_3.update_layout(
+    font=dict(
+        family="DejaVu Sans Mono",  # Custom font
+        size=14,  # Larger font size for readability
+    ),
+    title_font=dict(
+        family="DejaVu Sans Mono",
+        size=20,  # Larger title font
+        color='#fff8e8',  # Title color
+    ),
+    plot_bgcolor='#20272d',  # Background color
+    paper_bgcolor='#20272d',  # Outer background color
+    margin=dict(t=60, l=10, r=10, b=10),  # Adjusting margins
+    width=700,  # Increased width
+    height=700,  # Increased height
+    hoverlabel=dict(  # Hover label customization
+        font=dict(family="DejaVu Sans Mono"),
+        bgcolor='#333333',
+        font_color='#fff8e8'
+    )
+)
+# Update hovertemplate to show both citation count and percentage
+fig_3.update_traces(
+    hovertemplate="<b>%{label}</b><br>Citations: %{value}<br>Percentage: %{percentParent:.2%}",
+)
+
+
+# CITATIONS VS DOWNLOADS
+# Create the bubble plot using Plotly
+fig_4 = px.scatter(
+    df,
+    x='citations_normalized',
+    y='downloads',
+    size='citations',  # Size of the bubbles based on downloads
+    hover_data=['title', 'first_author', 'year'],  # Hover info for papers
+    #title='Top Cited Papers vs. Downloads',
+    labels={'citations_normalized': 'Normalized Citations', 'downloads': 'Downloads'},
+    opacity=0.7,  # Slight transparency for better overlapping visibility
+    size_max=40,  # Maximum bubble size
+)
+
+# Customize layout
+fig_4.update_layout(
+    font=dict(
+        family="DejaVu Sans Mono",  # Custom font
+        size=12,
+    ),
+    title_font=dict(
+        family="DejaVu Sans Mono",
+        size=18,
+        color='#fff8e8',  # Title color
+    ),
+    plot_bgcolor='#20272d',  # Background color
+    paper_bgcolor='#20272d',  # Outer background
+    width=1000,  # Custom width
+    height=600,  # Custom height
+    xaxis=dict(
+        title_font=dict(color='#fff8e8'),  # X-axis label color
+        tickfont=dict(color='#fff8e8'),  # X-axis tick label color
+        gridcolor='rgba(255, 255, 255, 0.2)',  # Grid color
+        linecolor='rgba(255, 255, 255, 0.5)',  # Axis line color
+        type='log'
+    ),
+    yaxis=dict(
+        title_font=dict(color='#fff8e8'),  # Y-axis label color
+        tickfont=dict(color='#fff8e8'),  # Y-axis tick label color
+        gridcolor='rgba(255, 255, 255, 0.2)',  # Grid color
+        linecolor='rgba(255, 255, 255, 0.5)',  # Axis line color
+        type='log',
+    ),
+    hoverlabel=dict(
+        bgcolor='#333333',  # Background color for hover labels
+        font_size=12,  # Font size for hover labels
+        font_family="DejaVu Sans Mono",  # Hover font
+        font_color='#FFF8E8'  # Text color for hover labels
+    )
+)
+
+# Customize marker styling (bubbles)
+fig_4.update_traces(
+    marker=dict(
+        color='#F2A604',  # Custom color for bubbles
+        line=dict(
+            width=0.5,
+            color='#20272d'  # Border color around bubbles
+        )
+    )
+)
+
+
+# theoretical vs experimental
+# Filter data for years after 1980
+df_filtered = df[df['year'] > 1980]
+
+# Ensure that `bibcode` is included in the filtered DataFrame
+theoretical_vs_experimental_df = df_filtered[['year', 'particles', 'gravity', 'detectors', 'colliders', 'stellar_objects', 'methods', 'inferences', 'telescopes', 'dm_models', 'bibcode']].copy()
+
+# Define research focus based on non-null values, same as before
+theoretical_vs_experimental_df['category'] = None
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['particles'].notnull(), 'category'] = 'Particles'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['gravity'].notnull(), 'category'] = 'Gravity'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['detectors'].notnull(), 'category'] = 'Detectors'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['colliders'].notnull(), 'category'] = 'Colliders'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['stellar_objects'].notnull(), 'category'] = 'Stellar Objects'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['methods'].notnull(), 'category'] = 'Methods'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['inferences'].notnull(), 'category'] = 'Inferences'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['telescopes'].notnull(), 'category'] = 'Telescopes'
+theoretical_vs_experimental_df.loc[theoretical_vs_experimental_df['dm_models'].notnull(), 'category'] = 'Dark matter models'
+
+# Drop rows without a category
+theoretical_vs_experimental_df = theoretical_vs_experimental_df.dropna(subset=['category'])
+
+# Map categories to "Theoretical" or "Experimental"
+theoretical_map = {
+    'Particles': 'Experimental', 'Detectors': 'Experimental', 'Colliders': 'Experimental', 'Telescopes': 'Experimental',
+    'Gravity': 'Theoretical', 'Dark matter models': 'Theoretical', 'Stellar Objects': 'Theoretical', 'Methods': 'Theoretical', 'Inferences': 'Theoretical'
+}
+theoretical_vs_experimental_df['research_type'] = theoretical_vs_experimental_df['category'].map(theoretical_map)
+
+# Group by year, category, and research type, counting unique bibcodes
+grouped_data = theoretical_vs_experimental_df.groupby(['year', 'category', 'research_type'])['bibcode'].nunique().reset_index(name='counts')
+
+
+# Separate the data for experimental and theoretical subplots
+experimental_data = grouped_data[grouped_data['research_type'] == 'Experimental']
+theoretical_data = grouped_data[grouped_data['research_type'] == 'Theoretical']
+
+# Define color palettes
+experimental_colors = ['#AED3D4', '#65D4CC', '#5E9E95', '#A4D4AC']
+theoretical_colors = ['#ECD305', '#FCC405', '#F2A604', '#DC8334', '#EC5B1D']
+
+# Create subplot
+fig_5 = make_subplots(
+    rows=1, cols=2,
+    subplot_titles=("Experimental Research", "Theoretical Research"),
+    shared_yaxes=True
+)
+
+# Add experimental bars
+for i, category in enumerate(experimental_data['category'].unique()):
+    subset = experimental_data[experimental_data['category'] == category]
+    fig_5.add_trace(
+        go.Bar(
+            x=subset['year'],
+            y=subset['counts'],
+            name=category,
+            marker_color=experimental_colors[i % len(experimental_colors)]
+        ),
+        row=1, col=1
+    )
+
+# Add theoretical bars
+for i, category in enumerate(theoretical_data['category'].unique()):
+    subset = theoretical_data[theoretical_data['category'] == category]
+    fig_5.add_trace(
+        go.Bar(
+            x=subset['year'],
+            y=subset['counts'],
+            name=category,
+            marker_color=theoretical_colors[i % len(theoretical_colors)]
+        ),
+        row=1, col=2
+    )
+
+# Update layout
+fig_5.update_layout(
+    font=dict(
+        family="DejaVu Sans Mono",
+        size=12,
+        color='#fff8e8'
+    ),
+    title_font=dict(
+        family="DejaVu Sans Mono",
+        size=18,
+        color='#fff8e8'
+    ),
+    plot_bgcolor='#20272d',
+    paper_bgcolor='#20272d',
+    width=1200,
+    height=600,
+    yaxis_type="linear",
+    yaxis2_type='linear',
+    xaxis=dict(
+        title="Year",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    xaxis2=dict(
+        title="Year",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    yaxis=dict(
+        title="Papers",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    yaxis2=dict(
+        title="Papers",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    hoverlabel=dict(
+        bgcolor='#333333',
+        font_size=12,
+        font_family="DejaVu Sans Mono",
+        font_color='#FFF8E8'
+    ),
+    barmode='stack'
+)
+
+#FIG 6
+import numpy as np
+df_b = df[df['year'] > 1933]
+research_data = df_b[['year', 'theory', 'particles', 'gravity', 'detectors', 'colliders', 'dm_models', 'telescopes', 'stellar_objects', 'methods', 'inferences', 'citations']].copy()
+
+research_data['research_focus'] = None
+
+research_data.loc[research_data['theory'].notnull(), 'research_focus'] = 'Theories'
+research_data.loc[research_data['particles'].notnull(), 'research_focus'] = 'Particles'
+research_data.loc[research_data['gravity'].notnull(), 'research_focus'] = 'Gravitational phenomena'
+research_data.loc[research_data['detectors'].notnull(), 'research_focus'] = 'Detectors'
+research_data.loc[research_data['colliders'].notnull(), 'research_focus'] = 'Colliders'
+research_data.loc[research_data['stellar_objects'].notnull(), 'research_focus'] = 'Stellar Objects'
+research_data.loc[research_data['methods'].notnull(), 'research_focus'] = 'Methods'
+research_data.loc[research_data['inferences'].notnull(), 'research_focus'] = 'Inferences'
+research_data.loc[research_data['telescopes'].notnull(), 'research_focus'] = 'Telescopes'
+research_data.loc[research_data['dm_models'].notnull(), 'research_focus'] = 'Dark Matter Models'
+
+research_data = research_data.dropna(subset=['research_focus'])
+
+grouped_citation_data = research_data.groupby(['year', 'research_focus'])['citations'].sum().unstack(fill_value=0)
+
+grouped_citation_data_log = np.log10(grouped_citation_data + 1)  
+
+fig_6 = px.imshow(
+    grouped_citation_data_log.T, 
+    aspect='auto',
+    labels=dict(x="Year", y="Research Focus", color="Citations"),
+    color_continuous_scale='electric',
+)
+
+fig_6.update_layout(
+    hoverlabel=dict(
+        bgcolor='#333333',
+        font_size=12,
+        font_family="DejaVu Sans Mono",
+        font_color='#FFF8E8'
+    ),
+    font=dict(
+        family="DejaVu Sans Mono", 
+        size=12,
+        color='#fff8e8',  
+    ),
+    title_font=dict(
+        family="DejaVu Sans Mono",
+        size=18,
+        color='#fff8e8',  
+    ),
+    plot_bgcolor='#20272d',  
+    paper_bgcolor='#20272d',  
+    width=1000,  
+    height=600, 
+)
+
+fig_6.update_traces(
+    hovertemplate='Year: %{x}<br>Research Focus: %{y}<br>Citations: %{customdata}<extra></extra>',
+    customdata=grouped_citation_data.T.values  
+)
+
+tickvals_log = np.log10([1, 10, 100, 1000, 10000, 100000])  
+ticktext_normal = ['1', '10', '100', '1k', '10k', '100k'] 
+
+fig_6.update_coloraxes(
+    colorbar_tickvals=tickvals_log,  
+    colorbar_ticktext=ticktext_normal  
+)
+
+
+# PLOT 7
+df_filtered_2 = df[df['year'] > 1980]
+
+# Ensure that `bibcode` and `citations` are included in the filtered DataFrame
+theoretical_vs_experimental_df_2 = df_filtered_2[['year', 'particles', 'gravity', 'detectors', 'colliders', 'stellar_objects', 'methods', 'inferences', 'telescopes', 'dm_models', 'bibcode', 'citations']].copy()
+
+# Define research focus based on non-null values
+theoretical_vs_experimental_df_2['category'] = None
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['particles'].notnull(), 'category'] = 'Particles'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['gravity'].notnull(), 'category'] = 'Gravity'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['detectors'].notnull(), 'category'] = 'Detectors'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['colliders'].notnull(), 'category'] = 'Colliders'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['stellar_objects'].notnull(), 'category'] = 'Stellar Objects'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['methods'].notnull(), 'category'] = 'Methods'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['inferences'].notnull(), 'category'] = 'Inferences'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['telescopes'].notnull(), 'category'] = 'Telescopes'
+theoretical_vs_experimental_df_2.loc[theoretical_vs_experimental_df_2['dm_models'].notnull(), 'category'] = 'Dark Matter Models'
+
+# Drop rows without a category
+theoretical_vs_experimental_df_2 = theoretical_vs_experimental_df_2.dropna(subset=['category'])
+
+# Map categories to "Theoretical" or "Experimental"
+theoretical_map_2 = {
+    'Particles': 'Experimental', 'Detectors': 'Experimental', 'Colliders': 'Experimental', 'Telescopes': 'Experimental',
+    'Gravity': 'Theoretical', 'Dark Matter Models': 'Theoretical', 'Stellar Objects': 'Theoretical', 'Methods': 'Theoretical', 'Inferences': 'Theoretical'
+}
+theoretical_vs_experimental_df_2['research_type'] = theoretical_vs_experimental_df_2['category'].map(theoretical_map_2)
+
+# Group by year, category, and research type, summing citations
+grouped_data_2 = theoretical_vs_experimental_df_2.groupby(['year', 'category', 'research_type'])['citations'].sum().reset_index(name='total_citations')
+
+# Separate the data for experimental and theoretical subplots
+experimental_data_2 = grouped_data_2[grouped_data_2['research_type'] == 'Experimental']
+theoretical_data_2 = grouped_data_2[grouped_data_2['research_type'] == 'Theoretical']
+
+# Define color palettes
+experimental_colors_2 = ['#AED3D4', '#65D4CC', '#5E9E95', '#A4D4AC']
+theoretical_colors_2 = ['#ECD305', '#FCC405', '#F2A604', '#DC8334', '#EC5B1D']
+
+# Create subplot
+fig_7 = make_subplots(
+    rows=1, cols=2,
+    subplot_titles=("Experimental Research", "Theoretical Research"),
+    shared_yaxes=True
+)
+
+# Add experimental bars
+for i, category in enumerate(experimental_data_2['category'].unique()):
+    subset = experimental_data_2[experimental_data_2['category'] == category]
+    fig_7.add_trace(
+        go.Bar(
+            x=subset['year'],
+            y=subset['total_citations'],  # Use citation totals
+            name=category,
+            marker_color=experimental_colors_2[i % len(experimental_colors_2)]
+        ),
+        row=1, col=1
+    )
+
+# Add theoretical bars
+for i, category in enumerate(theoretical_data_2['category'].unique()):
+    subset = theoretical_data_2[theoretical_data_2['category'] == category]
+    fig_7.add_trace(
+        go.Bar(
+            x=subset['year'],
+            y=subset['total_citations'],  # Use citation totals
+            name=category,
+            marker_color=theoretical_colors_2[i % len(theoretical_colors_2)]
+        ),
+        row=1, col=2
+    )
+
+# Update layout with citation labels
+fig_7.update_layout(
+    font=dict(
+        family="DejaVu Sans Mono",
+        size=12,
+        color='#fff8e8'
+    ),
+    title_font=dict(
+        family="DejaVu Sans Mono",
+        size=18,
+        color='#fff8e8'
+    ),
+    plot_bgcolor='#20272d',
+    paper_bgcolor='#20272d',
+    width=1200,
+    height=600,
+    yaxis_type="linear",
+    yaxis2_type='linear',
+    xaxis=dict(
+        title="Year",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    xaxis2=dict(
+        title="Year",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    yaxis=dict(
+        title="Total Citations",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    yaxis2=dict(
+        title="Total Citations",
+        title_font=dict(color='#fff8e8'),
+        tickfont=dict(color='#fff8e8'),
+        gridcolor='rgba(255, 255, 255, 0.2)',
+        linecolor='rgba(255, 255, 255, 0.5)',
+        griddash="dash",
+        showline=False,
+    ),
+    hoverlabel=dict(
+        bgcolor='#333333',
+        font_size=12,
+        font_family="DejaVu Sans Mono",
+        font_color='#FFF8E8'
+    ),
+    barmode='stack'
+)
 
 
 spektrum_2 = ['#F2A604', '#ED90AE', '#59A689', '#5DAA53', '#0A4E6B', '#232323']
@@ -178,23 +574,24 @@ sidebar = html.Div(
         dcc.Dropdown(
             id='page-selector-dropdown',
             options=[
-                {'label': 'Dark Matter Models', 'value': '/page-1'},
-                {'label': 'Particles', 'value': '/page-2'},
-                {'label': 'Gravity', 'value': '/page-3'},
-                {'label': 'Theories', 'value': '/page-4'},
-                {'label': 'Telescopes', 'value': '/page-5'},
-                {'label': 'Detectors', 'value': '/page-6'},
-                {'label': 'Colliders', 'value': '/page-7'},
-                {'label': 'Inferences', 'value': '/page-8'},
-                {'label': 'Methods', 'value': '/page-9'},
-                {'label': 'Stellar objects', 'value': '/page-10'},
-                {'label': 'Mass range', 'value': '/page-11'},
-                {'label': 'Metrics', 'value': '/page-12'},
-                {'label': 'Authors', 'value': '/page-13'},
-                {'label': 'arXiv', 'value': '/page-14'},
-                {'label': 'Keywords', 'value': '/page-15'},
+                {'label': 'Dark Matter Models', 'value': '/dmm'},
+                {'label': 'Particles', 'value': '/particles'},
+                {'label': 'Gravity', 'value': '/gravity'},
+                {'label': 'Theories', 'value': '/theories'},
+                {'label': 'Telescopes', 'value': '/telescopes'},
+                {'label': 'Detectors', 'value': '/detectors'},
+                {'label': 'Colliders', 'value': '/colliders'},
+                {'label': 'Inferences', 'value': '/inferences'},
+                {'label': 'Methods', 'value': '/methods'},
+                {'label': 'Stellar objects', 'value': '/stellar_objects'},
+                {'label': 'Mass range', 'value': '/mass_range'},
+                {'label': 'Metrics', 'value': '/metrics'},
+                {'label': 'Authors', 'value': '/authors'},
+                {'label': 'arXiv', 'value': '/arXiv'},
+                {'label': 'Keywords', 'value': '/keywords'},
+                {'label': 'Research focus', 'value': '/research_focus'},
             ],
-            value='/page-1',  # Default value
+            value='/dmm',  # Default value
             className='custom-dropdown',  # Apply custom CSS class
             style={'color': dark_theme['text'], 'backgroundColor': dark_theme['background']}  # Dropdown's visible part
         ),
@@ -219,7 +616,7 @@ header = html.Div(
 )
 
 # Page layouts without light/dark mode switching
-def page_1_layout():
+def page_dmm_layout():
     return html.Div([
 # PLOT 1        
 html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -267,7 +664,7 @@ html.P(
     }
 ),
 
-        dcc.Graph(id='barplot-dm-models', figure=fig_1, style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        dcc.Graph(id='barplot-dm-models', figure=fig_1, style={'width': '70%', 'height': 'auto', 'marginBottom': '20px'}),
 
 # PLOT 2
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -300,7 +697,16 @@ html.P(
                 'margin': '0 auto',
             }
         ),
-        html.Img(id='top20-dm-models-img', src='assets/top20_dm_models_grid.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(
+            id='top20-dm-models-img',
+            src='assets/top20_dm_models_grid.svg',
+            style={
+                'width': '100%', 
+                'height': 'auto', 
+                'display': 'block',  # Centers image within its block
+                'margin': '0 auto'   # Centers image horizontally
+            }),
 # PLOT 3
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.H1('3.', style={
@@ -331,7 +737,16 @@ html.P(
                 'margin': '0 auto',
             }
         ),
-        html.Img(id='citations-dm-models-img', src='assets/dm_models_vs_citations.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(
+            id='citations-dm-models-img',
+            src='assets/dm_models_vs_citations.svg',
+            style={
+                'width': '80%', 
+                'height': 'auto', 
+                'display': 'block',  # Centers image within its block
+                'margin': '0 auto'   # Centers image horizontally
+            }),
         
 #PLOT 4
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -363,8 +778,16 @@ html.P(
                 'margin': '0 auto',
             }
         ),
-        html.Img(id='pop-dm-models-img', src='assets/pop_dm_models.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(
+            id='pop-dm-models-img',
+            src='assets/pop_dm_models.svg',
+            style={
+                'width': '80%', 
+                'height': 'auto', 
+                'display': 'block',  # Centers image within its block
+                'margin': '0 auto'   # Centers image horizontally
+            }),
 # PLOT 5
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.H1('5.', style={
@@ -396,7 +819,16 @@ html.P(
                 'margin': '0 auto',
             }
         ),
-        html.Img(id='mass-dm-models-img', src='assets/mass_dm_models.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(
+            id='mass-dm-models-img',
+            src='assets/mass_dm_models.svg',
+            style={
+                'width': '80%', 
+                'height': 'auto', 
+                'display': 'block',  # Centers image within its block
+                'margin': '0 auto'   # Centers image horizontally
+            }),
 # PLOT 6
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.H1('6.', style={
@@ -428,13 +860,13 @@ html.P(
                 'margin': '0 auto',
             }
         ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Div(dcc.Graph(id='sunburst-dm-models'), style={'display': 'flex', 'justifyContent': 'center'}),
-        #html.Div(dcc.Graph(id='treemap-dm-models'), style={'display': 'flex', 'justifyContent': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 
-def page_2_layout():
+def page_particles_layout():
     return html.Div([
         html.H2('Particles', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -442,7 +874,7 @@ def page_2_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_3_layout():
+def page_gravity_layout():
     return html.Div([
         html.H2('Gravitational phenomena', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -453,7 +885,7 @@ def page_3_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_4_layout():
+def page_theories_layout():
     return html.Div([
         html.H2('Theories', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -462,7 +894,7 @@ def page_4_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_5_layout():
+def page_telescopes_layout():
     return html.Div([
         html.H2('Telescopes', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -471,7 +903,7 @@ def page_5_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_6_layout():
+def page_detectors_layout():
     return html.Div([
         html.H2('Detectors', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -480,7 +912,7 @@ def page_6_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_7_layout():
+def page_colliders_layout():
     return html.Div([
         html.H2('Colliders', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -489,7 +921,7 @@ def page_7_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_8_layout():
+def page_inferences_layout():
     return html.Div([
         html.H2('Inferences', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -498,7 +930,7 @@ def page_8_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_9_layout():
+def page_methods_layout():
     return html.Div([
         html.H2('Methods', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -507,7 +939,7 @@ def page_9_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_10_layout():
+def page_stellar_objects_layout():
     return html.Div([
         html.H2('Mass range', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -516,7 +948,7 @@ def page_10_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_11_layout():
+def page_mass_range_layout():
     return html.Div([
         html.H2('Mass range', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -528,22 +960,65 @@ def page_11_layout():
 
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
-def page_12_layout():
+def page_metrics_layout():
     return html.Div([
-        html.H2('Citations vs. Downloads', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-        
+
+        html.H2('Metrics', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',  # Change to left justification
+            'marginLeft': '10%'  # Optional: Align text with other elements
+        }),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('1.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',  # Change to left justification
+            'fontSize': '3em',
+            'marginLeft': '10%'  # Optional alignment for indentation
+        }),
+        html.H3('Citations vs. Downloads', style={
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontWeight': '400',
+            'color': dark_theme['text'],
+            'textAlign': 'left', 
+            'marginLeft': '10%'  
+        }),        
         html.P(
             'This page shows the scatter plot depicting the relationship between citations and downloads. Hover over points to view details such as title, first author, and publication year.',
-            style={'fontFamily': 'DejaVu Sans Mono', 'color': dark_theme['text'], 'textAlign': 'center', 'padding': '5px', 'lineHeight': '1', 'fontSize': '12px', 'width': '80%', 'margin': '0 auto'}
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
         ),
-        
-        dcc.Graph(id='citations-downloads-scatter', figure=scatter_fig, style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Div(
+            dcc.Graph(
+                id='citations-downloads-scatter',
+                figure=fig_4,
+                style={
+                    'width': '80%',      # Controls the container size of the graph
+                    'height': 'auto', 
+                    'marginBottom': '20px'
+                }
+            ),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Centers the graph on the page
+        ),
 
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
-def page_13_layout():
+def page_authors_layout():
     return html.Div([
 # PLOT 1
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -586,9 +1061,47 @@ def page_13_layout():
                 'margin': '0 auto',
             }
         ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Img(id='top20-cited-authors-img', src='assets/author_citations.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+# PLOT 2
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('2.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',  # Change to left justification
+            'fontSize': '3em',
+            'marginLeft': '10%'  # Optional alignment for indentation
+        }),
+        html.H3('Top 20 most active authors', style={
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontWeight': '400',
+            'color': dark_theme['text'],
+            'textAlign': 'left', 
+            'marginLeft': '10%'  
+        }),
+        html.P(
+            'Plot of the top 20 most productive authors (in terms of paper count). ',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='top20-productive-authors-img', src='assets/author_paper_count.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+
+
+
+        
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
-def page_14_layout():
+def page_arXiv_layout():
     return html.Div([
         # PLOT 1
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -634,9 +1147,9 @@ def page_14_layout():
                 'margin': '0 auto',
             }
         ),
-        
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         # Center the images
-        html.Img(id='metrics-vs-arXiv-img', src='assets/metrics_vs_arXiv_category.svg', style={
+        html.Img(id='metrics-vs-arXiv-class-img', src='assets/metrics_vs_arXiv_classification.svg', style={
             'width': '80%', 
             'height': 'auto', 
             'margin': '0 auto',  # Centers image horizontally
@@ -651,11 +1164,47 @@ def page_14_layout():
             'display': 'block',  # Centers image within its block
             'marginBottom': '20px'
         }),
+# PLOT 3
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('2.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%'
+        }),
+        html.H3('top titles by arXiv category', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+        }),
         
+        html.P(
+            'Interactive plot of the most cited papers grouped by their arXiv category. Click to select slices; hover for details on titles and citations.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            dcc.Graph(id='titles-arXiv-fig', figure=fig_3, style={'width': '70%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}
+        ),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 
-def page_15_layout():
+def page_keywords_layout():
     return html.Div([
 # PLOT 1
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -701,6 +1250,139 @@ def page_15_layout():
         html.Img(id='keyword-vs-citations-img', src='assets/keyword_vs_citations.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
+
+def page_research_focus_layout():
+    return html.Div([
+        # local header
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+
+        html.H2('Research focus', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+        }),        
+        
+# PLOT 1
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('1.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%'
+        }),
+        html.H3('Theoretical vs. Experimental | paper count', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+        }),
+        
+        html.P(
+            'Approximate estimation of research focus between experimental and theoretical efforts based on paper count.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            dcc.Graph(id='theoretical-experimental-papers-fig', figure=fig_5, style={'width': '70%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'left'}
+        ),
+
+# PLOT 2
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('2.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%'
+        }),
+        html.H3('Theoretical vs. Experimental | citations', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+        }),
+        
+        html.P(
+            'Approximate estimation of research focus between experimental and theoretical efforts based on citations.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            dcc.Graph(id='theoretical-experimental-citations-fig', figure=fig_7, style={'width': '70%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'left'}
+        ),
+# PLOT 3
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('3.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%'
+        }),
+        html.H3('citations by research focus', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+        }),
+        
+        html.P(
+            'Citations by research focus. hover for details.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            dcc.Graph(id='citations-research-focus-fig', figure=fig_6, style={'width': '70%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'left'}
+        ),
+
+
+
+
+        
+    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
+
 def page_about_layout():
     return html.Div([
         html.H2('About the project', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
@@ -731,36 +1413,38 @@ def update_url_from_dropdown(selected_page):
     [Input('url', 'pathname')]
 )
 def display_page(pathname):
-    if pathname == '/page-1':
-        return page_1_layout()
-    elif pathname == '/page-2':
-        return page_2_layout()
-    elif pathname == '/page-3':
-        return page_3_layout()
-    elif pathname == '/page-4':
-        return page_4_layout()
-    elif pathname == '/page-5':
-        return page_5_layout()
-    elif pathname == '/page-6':
-        return page_6_layout()
-    elif pathname == '/page-7':
-        return page_7_layout()
-    elif pathname == '/page-8':
-        return page_8_layout()
-    elif pathname == '/page-9':
-        return page_9_layout()
-    elif pathname == '/page-10':
-        return page_10_layout()
-    elif pathname == '/page-11':
-        return page_10_layout()
-    elif pathname == '/page-12':
-        return page_12_layout()
-    elif pathname == '/page-13':
-        return page_13_layout()
-    elif pathname == '/page-14':
-        return page_14_layout()
-    elif pathname == '/page-15':
-        return page_15_layout()
+    if pathname == '/dmm':
+        return page_dmm_layout()
+    elif pathname == '/particles':
+        return page_particles_layout()
+    elif pathname == '/gravity':
+        return page_gravity_layout()
+    elif pathname == '/theories':
+        return page_theories_layout()
+    elif pathname == '/telescopes':
+        return page_telescopes_layout()
+    elif pathname == '/detectors':
+        return page_detectors_layout()
+    elif pathname == '/colliders':
+        return page_colliders_layout()
+    elif pathname == '/inferences':
+        return page_inferences_layout()
+    elif pathname == '/methods':
+        return page_methods_layout()
+    elif pathname == '/stellar_objects':
+        return page_stellar_objects_layout()
+    elif pathname == '/mass_range':
+        return page_mass_range_layout()
+    elif pathname == '/metrics':
+        return page_metrics_layout()
+    elif pathname == '/authors':
+        return page_authors_layout()
+    elif pathname == '/arXiv':
+        return page_arXiv_layout()
+    elif pathname == '/keywords':
+        return page_keywords_layout()
+    elif pathname == '/research_focus':
+        return page_research_focus_layout()
     elif pathname == '/about':
         return page_about_layout()
 
