@@ -29,6 +29,7 @@ df_unique = pd.read_csv('df_unique.csv')
 paper_counts = pd.read_csv('assets/paper_counts.csv')
 
 
+
 # Plot codes:
 #                                                                                          -> PLOT <-
 #dark matter models & research trends
@@ -69,7 +70,7 @@ fig_1.update_layout(
     font=dict(family="DejaVu Sans Mono", size=12, color='#fff8e8'),
     plot_bgcolor='#20272d',
     paper_bgcolor='#20272d',
-    width=1200,
+    width=1000,
     height=3400,
     xaxis=dict(
         title_font=dict(color='#fff8e8'),
@@ -302,7 +303,7 @@ fig_5.update_layout(
     ),
     plot_bgcolor='#20272d',
     paper_bgcolor='#20272d',
-    width=1200,
+    width=1000,
     height=600,
     yaxis_type="linear",
     yaxis2_type='linear',
@@ -505,7 +506,7 @@ fig_7.update_layout(
     ),
     plot_bgcolor='#20272d',
     paper_bgcolor='#20272d',
-    width=1200,
+    width=1000,
     height=600,
     yaxis_type="linear",
     yaxis2_type='linear',
@@ -575,6 +576,12 @@ sidebar = html.Div(
             id='page-selector-dropdown',
             options=[
                 {'label': 'Dark Matter Models', 'value': '/dmm'},
+                {'label': 'co occurrence graphs', 'value': '/co_occurrence'},
+                {'label': 'Metrics', 'value': '/metrics'},
+                {'label': 'Authors', 'value': '/authors'},
+                {'label': 'arXiv', 'value': '/arXiv'},
+                {'label': 'Keywords', 'value': '/keywords'},
+                {'label': 'Research focus', 'value': '/research_focus'},
                 {'label': 'Particles', 'value': '/particles'},
                 {'label': 'Gravity', 'value': '/gravity'},
                 {'label': 'Theories', 'value': '/theories'},
@@ -585,11 +592,6 @@ sidebar = html.Div(
                 {'label': 'Methods', 'value': '/methods'},
                 {'label': 'Stellar objects', 'value': '/stellar_objects'},
                 {'label': 'Mass range', 'value': '/mass_range'},
-                {'label': 'Metrics', 'value': '/metrics'},
-                {'label': 'Authors', 'value': '/authors'},
-                {'label': 'arXiv', 'value': '/arXiv'},
-                {'label': 'Keywords', 'value': '/keywords'},
-                {'label': 'Research focus', 'value': '/research_focus'},
             ],
             value='/dmm',  # Default value
             className='custom-dropdown',  # Apply custom CSS class
@@ -611,8 +613,8 @@ sidebar = html.Div(
 
 # Header
 header = html.Div(
-    html.H4("dark matter research data", id='header-title', style={'textAlign': 'left', 'color': dark_theme['text']}),
-    style={'backgroundColor': dark_theme['background'], 'padding': '0px'}
+    html.H4("dark matter research data", id='header-title', style={'textAlign': 'center', 'color': dark_theme['text']}),
+    style={'backgroundColor': dark_theme['background'], 'padding': '10px'}
 )
 
 # Page layouts without light/dark mode switching
@@ -637,7 +639,9 @@ html.H1('1.', style={
     'color': dark_theme['text'], 
     'textAlign': 'left',  # Change to left justification
     'fontSize': '3em',
-    'marginLeft': '10%'  # Optional alignment for indentation
+    'marginLeft': '10%',
+    'marginTop': '2%',
+    'marginBottom': '2%' 
 }),
 
 html.H3('Top 20 most frequently referenced dark matter models', style={
@@ -663,8 +667,10 @@ html.P(
         'marginLeft': '10%'  # Optional alignment for indentation
     }
 ),
-
-        dcc.Graph(id='barplot-dm-models', figure=fig_1, style={'width': '70%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Div(
+            dcc.Graph(id='barplot-dm-models', figure=fig_1, style={'width': '80%', 'height': 'auto', 'marginBottom': '20px'}),
+            style={'display': 'flex', 'justifyContent': 'center'}
+        ),
 
 # PLOT 2
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -674,7 +680,9 @@ html.P(
             'color': dark_theme['text'], 
             'textAlign': 'left',  # Change to left justification
             'fontSize': '3em',
-            'marginLeft': '10%'  # Optional alignment for indentation
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Top 20 most frequently referenced dark matter models', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -702,7 +710,7 @@ html.P(
             id='top20-dm-models-img',
             src='assets/top20_dm_models_grid.svg',
             style={
-                'width': '100%', 
+                'width': '80%', 
                 'height': 'auto', 
                 'display': 'block',  # Centers image within its block
                 'margin': '0 auto'   # Centers image horizontally
@@ -715,7 +723,9 @@ html.P(
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Top 20 Dark Matter Models by Citations', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -756,7 +766,9 @@ html.P(
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Prevalence of Dark Matter Models in Papers Over Time', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -796,7 +808,9 @@ html.P(
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Mass Range Coverage for Dark Matter Models', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -837,7 +851,9 @@ html.P(
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3("Categorized dark matter models", style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -979,7 +995,9 @@ def page_metrics_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',  # Change to left justification
             'fontSize': '3em',
-            'marginLeft': '10%'  # Optional alignment for indentation
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Citations vs. Downloads', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -1038,7 +1056,9 @@ def page_authors_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',  # Change to left justification
             'fontSize': '3em',
-            'marginLeft': '10%'  # Optional alignment for indentation
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Top 20 most cited authors', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -1062,7 +1082,8 @@ def page_authors_layout():
             }
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.Img(id='top20-cited-authors-img', src='assets/author_citations.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Img(id='top20-cited-authors-img', src='assets/author_citations.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
 # PLOT 2
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.H1('2.', style={
@@ -1071,7 +1092,9 @@ def page_authors_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',  # Change to left justification
             'fontSize': '3em',
-            'marginLeft': '10%'  # Optional alignment for indentation
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Top 20 most active authors', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -1095,7 +1118,8 @@ def page_authors_layout():
             }
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.Img(id='top20-productive-authors-img', src='assets/author_paper_count.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Img(id='top20-productive-authors-img', src='assets/author_paper_count.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
 
 
 
@@ -1122,7 +1146,9 @@ def page_arXiv_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         
         html.H3('Metrics for arXiv representation', style={
@@ -1152,8 +1178,8 @@ def page_arXiv_layout():
         html.Img(id='metrics-vs-arXiv-class-img', src='assets/metrics_vs_arXiv_classification.svg', style={
             'width': '80%', 
             'height': 'auto', 
-            'margin': '0 auto',  # Centers image horizontally
-            'display': 'block',  # Centers image within its block
+            'margin': '0 auto', 
+            'display': 'block', 
             'marginBottom': '20px'
         }),
         
@@ -1172,7 +1198,9 @@ def page_arXiv_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('top titles by arXiv category', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1198,7 +1226,7 @@ def page_arXiv_layout():
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Div(
-            dcc.Graph(id='titles-arXiv-fig', figure=fig_3, style={'width': '70%', 'height': 'auto'}),
+            dcc.Graph(id='titles-arXiv-fig', figure=fig_3, style={'width': '50%', 'height': 'auto'}),
             style={'display': 'flex', 'justifyContent': 'center'}
         ),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
@@ -1209,7 +1237,7 @@ def page_keywords_layout():
 # PLOT 1
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
 
-        html.H2('Keyword', style={
+        html.H2('Keywords', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1224,7 +1252,9 @@ def page_keywords_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',  # Change to left justification
             'fontSize': '3em',
-            'marginLeft': '10%'  # Optional alignment for indentation
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Keyword by citations', style={
             'fontFamily': 'DejaVu Sans Mono',
@@ -1247,7 +1277,75 @@ def page_keywords_layout():
                 'margin': '0 auto',
             }
         ),
-        html.Img(id='keyword-vs-citations-img', src='assets/keyword_vs_citations.svg', style={'width': '100%', 'height': 'auto', 'marginBottom': '20px'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='keyword-vs-citations-img', src='assets/keyword_vs_citations.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('2.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',  # Change to left justification
+            'fontSize': '3em',
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
+        }),
+        html.H3('Keyword = "Dark Matter"', style={
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontWeight': '400',
+            'color': dark_theme['text'],
+            'textAlign': 'left', 
+            'marginLeft': '10%'  
+        }),
+        html.P(
+            'The following series of plots are made from a filtered subset of the data, specifically the subset of papers which have the explicit keyword "dark matter". For breivity, I will refer to this subset as "Dark Matter Research."',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='papercount-img', src='assets/dm_papers_over_time.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='citations-img', src='assets/total_citations_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='reads-img', src='assets/total_reads_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='downloads-img', src='assets/total_downloads_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='arxiv-distribution-img', src='assets/arxiv_distribution_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='citations-models-darkmatter-img', src='assets/dm_models_citations_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='particles-stellar-objects-darkmatter-img', src='assets/top_stellar_objects_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='top-models-darkmatter-img', src='assets/top_models_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='top-models-citations-darkmatter-img', src='assets/dm_models_and_citations_over_time_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='top-models-downloads-darkmatter-img', src='assets/dm_models_and_downloads_over_time_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='top-models-reads-darkmatter-img', src='assets/dm_models_and_reads_over_time_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 
@@ -1272,7 +1370,9 @@ def page_research_focus_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Theoretical vs. Experimental | paper count', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1298,8 +1398,8 @@ def page_research_focus_layout():
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Div(
-            dcc.Graph(id='theoretical-experimental-papers-fig', figure=fig_5, style={'width': '70%', 'height': 'auto'}),
-            style={'display': 'flex', 'justifyContent': 'left'}
+            dcc.Graph(id='theoretical-experimental-papers-fig', figure=fig_5, style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}
         ),
 
 # PLOT 2
@@ -1310,7 +1410,9 @@ def page_research_focus_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('Theoretical vs. Experimental | citations', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1336,8 +1438,8 @@ def page_research_focus_layout():
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Div(
-            dcc.Graph(id='theoretical-experimental-citations-fig', figure=fig_7, style={'width': '70%', 'height': 'auto'}),
-            style={'display': 'flex', 'justifyContent': 'left'}
+            dcc.Graph(id='theoretical-experimental-citations-fig', figure=fig_7, style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}
         ),
 # PLOT 3
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -1347,7 +1449,9 @@ def page_research_focus_layout():
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'fontSize': '3em',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
         }),
         html.H3('citations by research focus', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1373,14 +1477,80 @@ def page_research_focus_layout():
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Div(
-            dcc.Graph(id='citations-research-focus-fig', figure=fig_6, style={'width': '70%', 'height': 'auto'}),
-            style={'display': 'flex', 'justifyContent': 'left'}
+            dcc.Graph(id='citations-research-focus-fig', figure=fig_6, style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}
         ),
 
 
 
 
         
+    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
+
+def page_co_occurrence_layout():
+    return html.Div([
+         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+
+         html.H2('Co occurrence graphs', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+         }),        
+        
+# PLOT 1
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+         
+        html.H1('1.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
+        }),
+        html.H3('Network graph of co-occurrences between dark matter models, particles, and theories.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%'
+        }),
+        
+        html.P(
+            'This network plot displays the co-occurrences between dark matter models, theories, and particles. The size of the node is proportional to the number of co-occurrences. Navigate by click and drag, select any node by clicking to view its connections.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '1',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        # Embed the HTML file in an Iframe
+        html.Div(
+            html.Iframe(
+                src="assets/network/index.html",  # Load from assets directory
+                style={
+                    "width": "1200px",   # Adjust as needed
+                    "height": "750px", # Match the network height
+                    "border": "none",
+                    "display": "block",
+                    "margin": "0 auto"
+                }
+            ),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the Iframe
+        ),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_about_layout():
@@ -1445,6 +1615,8 @@ def display_page(pathname):
         return page_keywords_layout()
     elif pathname == '/research_focus':
         return page_research_focus_layout()
+    elif pathname == '/co_occurrence':
+        return page_co_occurrence_layout()
     elif pathname == '/about':
         return page_about_layout()
 
