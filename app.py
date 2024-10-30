@@ -621,9 +621,7 @@ header = html.Div(
 def page_dmm_layout():
     return html.Div([
 # PLOT 1        
-html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
-html.H2('Dark Matter Models', style={
+html.H1('Dark Matter Models', style={
     'fontFamily': 'DejaVu Sans Mono', 
     'fontWeight': '400', 
     'color': dark_theme['text'], 
@@ -631,8 +629,7 @@ html.H2('Dark Matter Models', style={
     'marginLeft': '10%'  # Optional: Align text with other elements
 }),
 
-html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
+html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
 html.H1('1.', style={
     'fontFamily': 'DejaVu Sans Mono', 
     'fontWeight': '400', 
@@ -644,7 +641,7 @@ html.H1('1.', style={
     'marginBottom': '2%' 
 }),
 
-html.H3('Top 20 most frequently referenced dark matter models', style={
+html.H2('Top 20 most frequently referenced dark matter models', style={
     'fontFamily': 'DejaVu Sans Mono', 
     'fontWeight': '400', 
     'color': dark_theme['text'], 
@@ -660,7 +657,7 @@ html.P(
         'color': dark_theme['text'], 
         'textAlign': 'left',  # Change to left justification
         'padding': '5px', 
-        'lineHeight': '1',
+        'lineHeight': '2',
         'fontSize': '12px',
         'width': '80%',  
         'margin': '0 auto',
@@ -684,7 +681,7 @@ html.P(
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Top 20 most frequently referenced dark matter models', style={
+        html.H2('Top 20 most frequently referenced dark matter models', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -699,7 +696,7 @@ html.P(
                 'color': dark_theme['text'], 
                 'textAlign': 'left', 
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -727,7 +724,7 @@ html.P(
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Top 20 Dark Matter Models by Citations', style={
+        html.H2('Top 20 Dark Matter Models by Citations', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -741,7 +738,7 @@ html.P(
                 'color': dark_theme['text'], 
                 'textAlign': 'left', 
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -770,7 +767,7 @@ html.P(
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Prevalence of Dark Matter Models in Papers Over Time', style={
+        html.H2('Prevalence of Dark Matter Models in Papers Over Time', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -784,7 +781,7 @@ html.P(
                 'color': dark_theme['text'], 
                 'textAlign': 'left', 
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -812,7 +809,7 @@ html.P(
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Mass Range Coverage for Dark Matter Models', style={
+        html.H2('Mass Range Coverage for Dark Matter Models', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -827,7 +824,7 @@ html.P(
                 'color': dark_theme['text'], 
                 'textAlign': 'left', 
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -855,7 +852,7 @@ html.P(
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3("Categorized dark matter models", style={
+        html.H2("Categorized dark matter models", style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -870,7 +867,7 @@ html.P(
                 'color': dark_theme['text'], 
                 'textAlign': 'left', 
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -884,17 +881,17 @@ html.P(
 
 def page_particles_layout():
     return html.Div([
-        html.H2('Particles', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.H1('Particles', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.Img(id='particles-img', src='assets/top_20_particles_grid_dark.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_gravity_layout():
     return html.Div([
-        html.H2('Gravitational phenomena', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Gravitational phenomena', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='gravity-img', src='assets/top15_gravity_grid.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Img(id='gravity-all-img', src='assets/all_gravity_terms_grid.svg', style={'width': '100%', 'height': 'auto'}),
@@ -903,84 +900,82 @@ def page_gravity_layout():
 
 def page_theories_layout():
     return html.Div([
-        html.H2('Theories', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Theories', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='theory-img', src='assets/top20_theory_grid_dark.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_telescopes_layout():
     return html.Div([
-        html.H2('Telescopes', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Telescopes', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='telescopes-img', src='assets/top20_telescopes_grid.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_detectors_layout():
     return html.Div([
-        html.H2('Detectors', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Detectors', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='detector-img', src='assets/top20_detectors_grid.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_colliders_layout():
     return html.Div([
-        html.H2('Colliders', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Colliders', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='colliders-img', src='assets/top20_colliders_grid.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_inferences_layout():
     return html.Div([
-        html.H2('Inferences', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Inferences', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='inferences-img', src='assets/top20_inferences_grid.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_methods_layout():
     return html.Div([
-        html.H2('Methods', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Methods', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='methods-img', src='assets/top20_methods_grid.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_stellar_objects_layout():
     return html.Div([
-        html.H2('Mass range', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Stellar objects', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Img(id='stellar-objects-img', src='assets/top20_stellar_objects.svg', style={'width': '100%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_mass_range_layout():
     return html.Div([
-        html.H2('Mass range', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.H3('Use frequency of mass/energy expressions over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
+        html.H1('Mass range', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H2('Use frequency of mass/energy expressions over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Div(
             html.Img(id='mass-img', src='assets/mass_range.svg', style={'width': '80%', 'height': 'auto'}),
             style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
         ),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 def page_metrics_layout():
     return html.Div([
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
-        html.H2('Metrics', style={
+        html.H1('Metrics', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -988,7 +983,7 @@ def page_metrics_layout():
             'marginLeft': '10%'  # Optional: Align text with other elements
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -999,7 +994,7 @@ def page_metrics_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Citations vs. Downloads', style={
+        html.H2('Citations vs. Downloads', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -1014,7 +1009,7 @@ def page_metrics_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1039,9 +1034,7 @@ def page_metrics_layout():
 def page_authors_layout():
     return html.Div([
 # PLOT 1
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
-        html.H2('Authors', style={
+        html.H1('Authors', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1049,7 +1042,7 @@ def page_authors_layout():
             'marginLeft': '10%'  # Optional: Align text with other elements
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -1060,7 +1053,7 @@ def page_authors_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Top 20 most cited authors', style={
+        html.H2('Top 20 most cited authors', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -1075,7 +1068,7 @@ def page_authors_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1096,7 +1089,7 @@ def page_authors_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Top 20 most active authors', style={
+        html.H2('Top 20 most active authors', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -1111,7 +1104,7 @@ def page_authors_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1127,10 +1120,8 @@ def page_authors_layout():
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 def page_arXiv_layout():
     return html.Div([
-        # PLOT 1
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
-        html.H2('arXiv', style={
+# PLOT 1
+            html.H1('arXiv class', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1138,7 +1129,7 @@ def page_arXiv_layout():
             'marginLeft': '10%'
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1151,7 +1142,7 @@ def page_arXiv_layout():
             'marginBottom': '2%'
         }),
         
-        html.H3('Metrics for arXiv representation', style={
+        html.H2('Metrics for arXiv representation', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -1167,7 +1158,7 @@ def page_arXiv_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1190,7 +1181,7 @@ def page_arXiv_layout():
             'display': 'block',  # Centers image within its block
             'marginBottom': '20px'
         }),
-# PLOT 3
+# PLOT 2
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.H1('2.', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1202,7 +1193,7 @@ def page_arXiv_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('top titles by arXiv category', style={
+        html.H2('top titles by arXiv category', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1218,7 +1209,7 @@ def page_arXiv_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1235,9 +1226,7 @@ def page_arXiv_layout():
 def page_keywords_layout():
     return html.Div([
 # PLOT 1
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
-        html.H2('Keywords', style={
+        html.H1('Keywords', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1245,7 +1234,7 @@ def page_keywords_layout():
             'marginLeft': '10%'  # Optional: Align text with other elements
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -1256,7 +1245,7 @@ def page_keywords_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Keyword by citations', style={
+        html.H2('Keyword by citations', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -1271,7 +1260,7 @@ def page_keywords_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1282,6 +1271,7 @@ def page_keywords_layout():
             'display': 'block'}),
         
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+# PLOT 2
         html.H1('2.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -1292,7 +1282,7 @@ def page_keywords_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Keyword = "Dark Matter"', style={
+        html.H2('Keyword = "Dark Matter"', style={
             'fontFamily': 'DejaVu Sans Mono',
             'fontWeight': '400',
             'color': dark_theme['text'],
@@ -1307,7 +1297,7 @@ def page_keywords_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1351,19 +1341,15 @@ def page_keywords_layout():
 
 def page_research_focus_layout():
     return html.Div([
-        # local header
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
-        html.H2('Research focus', style={
+        html.H1('Research focus', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
             'textAlign': 'left',
             'marginLeft': '10%'
         }),        
-        
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '16%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
 # PLOT 1
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -1374,7 +1360,7 @@ def page_research_focus_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Theoretical vs. Experimental | paper count', style={
+        html.H2('Theoretical vs. Experimental | paper count', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1390,7 +1376,7 @@ def page_research_focus_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1414,7 +1400,7 @@ def page_research_focus_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Theoretical vs. Experimental | citations', style={
+        html.H2('Theoretical vs. Experimental | citations', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1430,7 +1416,7 @@ def page_research_focus_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1453,7 +1439,7 @@ def page_research_focus_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('citations by research focus', style={
+        html.H2('citations by research focus', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1469,7 +1455,7 @@ def page_research_focus_layout():
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1489,9 +1475,7 @@ def page_research_focus_layout():
 
 def page_co_occurrence_layout():
     return html.Div([
-         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-
-         html.H2('Co occurrence graphs', style={
+         html.H1('Co-occurrence graphs', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1499,8 +1483,8 @@ def page_co_occurrence_layout():
             'marginLeft': '10%'
          }),        
         
-# PLOT 1
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+# GRAPH 1
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
          
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1512,23 +1496,25 @@ def page_co_occurrence_layout():
             'marginTop': '2%',
             'marginBottom': '2%'
         }),
-        html.H3('Network graph of co-occurrences between dark matter models, particles, and theories.', style={
+        html.H2('Co-occurrences between dark matter models, particles, and theories.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
             'textAlign': 'left',
-            'marginLeft': '10%'
+            'marginLeft': '10%',
+            'lineHeight': '2',
         }),
         
         html.P(
-            'This network plot displays the co-occurrences between dark matter models, theories, and particles. The size of the node is proportional to the number of co-occurrences. Navigate by click and drag, select any node by clicking to view its connections.',
+            'This network graph displays the co-occurrences between dark matter models, theories, and particles. The size of the node is proportional to the number of co-occurrences. '
+            'Navigate by click and drag, select any node by clicking to view its connections.',
             style={
                 'fontFamily': 'DejaVu Sans Mono',
                 'color': dark_theme['text'], 
                 'textAlign': 'left',
                 'marginLeft': '10%',
                 'padding': '5px', 
-                'lineHeight': '1',
+                'lineHeight': '2',
                 'fontSize': '12px',
                 'width': '80%',  
                 'margin': '0 auto',
@@ -1551,12 +1537,642 @@ def page_co_occurrence_layout():
         ),
 
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+# GRAPH 2   
+        html.H1('2.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
+        }),
+        html.H2('Co-occurrences between dark matter models, particles, particle colliders, and detectors.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%',
+            'lineHeight': '2',
+            'width': '80%',
+        }),
+        
+        html.P(
+            'This network graph displays the co-occurrences between dark matter models, particles, particle colliders, and detectors.'
+            'The size of the node is proportional to the number of co-occurrences. Navigate by click and drag, select any node by clicking to view its connections.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        # Embed the HTML file in an Iframe
+        html.Div(
+            html.Iframe(
+                src="assets/network2/index.html",  # Load from assets directory
+                style={
+                    "width": "1200px",   # Adjust as needed
+                    "height": "750px", # Match the network height
+                    "border": "none",
+                    "display": "block",
+                    "margin": "0 auto"
+                }
+            ),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the Iframe
+        ),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+# GRAPH 3   
+        html.H1('3.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
+        }),
+        html.H2('Co-occurrences between dark matter models, stellar objects, telescopes, and gravitational phenomena.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%',
+            'lineHeight': '2',
+            'width': '80%',
+        }),
+        
+        html.P(
+            'This network plot displays the co-occurrences between dark matter models, particles, particle colliders, and detectors.'
+            'The size of the node is proportional to the number of co-occurrences. Navigate by click and drag, select any node by clicking to view its connections.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        # Embed the HTML file in an Iframe
+        html.Div(
+            html.Iframe(
+                src="assets/network3/index.html",  # Load from assets directory
+                style={
+                    "width": "1200px",   # Adjust as needed
+                    "height": "750px", # Match the network height
+                    "border": "none",
+                    "display": "block",
+                    "margin": "0 auto"
+                }
+            ),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the Iframe
+        ),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_about_layout():
-    return html.Div([
-        html.H2('About the project', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'center'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
+    return html.Div([         
+        html.H1('ABOUT THE PROJECT.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
+        }),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '32%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%',}),
+        html.P([
+            'This project was conceptualized within a larger project on the philosophy and history of dark matter. When writing a paper on the bibliographical history of dark matter, '
+            'I realized that few or no sources overlooking the diversity of research which specialized on dark matter was available. While the ',
+            html.A('Astrophysics Data System', href='https://ui.adsabs.harvard.edu/', target='_blank', style={'color': '#E09351FF', 'text-decoration': 'underline'}),
+            ' (operated by the Smithsonian Astrophysical Observatory under NASA Cooperative Agreement) is an excellent data source with a broad coverage, using it to discern the '
+            'larger historical picture, or the evolution of the dark matter hypothesis over time, was not optimal. Because of this, I decided to create my own bibliographical '
+            'database, covering all the papers containing the phrase "dark matter" somewhere in the paper from the ADS. I did this by programmatically accessing the ADS servers using their API service, '
+            'which allows the token-bearer to select search parameters, and which bibliographical fields to return (the below example script returns "bibcode, title, year, keyword_norm, abstract, page"):'
+            ], style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Pre(
+            """
+            import time
+            import json
+            import requests
+            from urllib.parse import urlencode
+            from bs4 import BeautifulSoup
+
+            def query_ads_api(encoded_query, rows=2000, start=0, token=''):
+                data = []
+
+                while True:
+                    query_url = ("https://api.adsabs.harvard.edu/v1/search/query?{encoded_query}"
+                                 "&rows={rows}"
+                                 "&start={start}").format(encoded_query=encoded_query, rows=rows, start=start)
+
+                    response = requests.get(query_url, headers={'Authorization': 'Bearer ' + token})
+
+                    if response.status_code == 429:
+                        retry_after = int(response.headers.get('Retry-After', 5))
+                        print(f"Rate limit exceeded. Waiting for {retry_after} seconds before retrying.")
+                        time.sleep(retry_after)
+                        continue
+
+                    response.raise_for_status()
+
+                    try:
+                        docs = response.json()['response']['docs']
+                    except KeyError:
+                        print('No docs found')
+                        break
+
+                    data.extend(docs)
+
+                    start += rows
+                    print(f"Processed {start} documents.")
+
+                    if not docs:
+                        break
+
+                try:
+                    with open('data.json', 'w') as f:
+                        json.dump(data, f, indent=4)
+                except (TypeError, ValueError) as e:
+                    print("Error writing JSON file:", e)
+
+                return data
+            # main executable
+            def main():
+                encoded_query = urlencode({"q": "full:\"dark matter\"",
+                                           "fl": "bibcode, title, year, keyword_norm, abstract, page"})
+                token = '<API_TOKEN>'
+                results = query_ads_api(encoded_query, token=token)
+
+                print(f"Total results: {len(results)}")
+
+            if __name__ == "__main__":
+                main()
+                """,
+            style={
+            'backgroundColor': '#20272d',
+            'color': '#E09351FF',
+            'padding': '10px',
+            'borderRadius': '5px',
+            'overflowX': 'auto',
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontSize': '12px',
+            'width': '60%',
+            'marginLeft': '10%'
+        }),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.P([
+            'The above script was made to return a json of all natural language fields, and in conjunction with serveral other scripts '
+            'the full specification of data fields for the 177.284 returning bibcodes are the following: bibcode, arxiv_class, database, doctype, '
+            'first_author, keyword_norm, keyword_schema, title, year, read_count, citation_count, citation_count_norm, citation (references), page, '
+            'abstract, data. Below is an example of the json structure for a single bibcode (not exhaustive): '
+            ], style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Pre(
+            """
+            {
+        "bibcode": "1994A&A...285...79P",
+        "arxiv_class": [
+            "astro-ph"
+        ],
+        "database": [
+            "astronomy"
+        ],
+        "doctype": "article",
+        "first_author": "Pfenniger, D.",
+        "keyword_norm": [
+            "cosmology dark matter",
+            "galaxies kinematics and dynamics",
+            "galaxies intergalactic medium",
+            "galaxies evolution",
+            "astrophysics"
+        ],
+        "keyword_schema": [
+            "Astronomy",
+            "Astronomy",
+            "Astronomy",
+            "Astronomy",
+            "arXiv"
+        ],
+        "title": [
+            "Is dark matter in spiral galaxies cold gas? I. Observational constraints and dynamical clues about galaxy evolution"
+        ],
+        "year": "1994",
+        "read_count": 10,
+        "data": [
+            "SIMBAD:1"
+        ],
+        "citation_count": 333,
+        "citation_count_norm": 111.0,
+        "citation": [
+            "2009arXiv0904.4638R",
+            "2010A&A...512A..17B",
+            "2010A&A...520A.107B",
+            "2010AIPC.1241..154C",
+            "2010AdAst2010E...1B",
+            "2010ApJ...715.1497J",
+            "2010ApPhB.101..321T",
+            "2010PhDT.......243G",
+            "2011A&A...525A.108H",
+            "2011A&A...532A.121H",
+            "2011ApJ...736...91L",
+            "2011MNRAS.416.1936T",
+            "2011MNRAS.417..198V",
+            "2011Prama..76....1C",
+            "2012A&A...537A..78B",
+            "2012A&A...543L...6G",
+            "2012A&A...544A..55B",
+            "2012A&A...548A..52B",
+            "2012AJ....143...40M",
+            "2012ApJ...751...30M",
+            "2012JPhCS.354a2004D",
+            "2012MNRAS.420.3071S",
+            "2012arXiv1204.4649D",
+            "2013AstL...39..291Z",
+            "2013LRR....16....6A",
+            "2013MNRAS.429.1949A",
+            "2013MNRAS.429.2537M",
+            "2013MNRAS.434.2814W",
+            "2014MNRAS.437.3072K",
+            "2014MNRAS.443....2E",
+            "2014SAAS...37....1B",
+            "2015A&A...575A..32C",
+            "2015A&A...578A..18F",
+            "2015A&A...584A.113L",
+            "2015ApJ...808..115M",
+            "2015Galax...3..184L",
+            "2015MNRAS.450.1032K",
+            "2015MNRAS.451.2889K",
+            "2015sf2a.conf..385I",
+            "2016A&A...591A.100F",
+            "2016MNRAS.457.3666C",
+            "2017A&A...602A..45L",
+            "2017CaJPh..95..156H",
+            "2017IAUS..321..172M",
+            "2017PhyU...60....3Z",
+            "2018A&A...609A.131G",
+            "2018A&A...613A..64F",
+            "2018LRR....21....2A",
+            "2019A&A...629A..87D",
+            "2019ApJ...881...69W",
+            "2019MNRAS.487.2148G",
+            "2019PhRvD.100d3028Q",
+            "2019Symm...11.1009J",
+            "2020MNRAS.493.1736R",
+            "2020arXiv201208326K",
+            "2021MNRAS.502.3294W",
+            "2021R&QE...63..643S",
+            "2022ApJ...932....4W",
+            "2022MNRAS.513.2491T",
+            "2023ApJ...945....3S",
+            "2023PASP..135j5002H",
+            "2023PDU....4201339K",
+            "2023Symm...15..160T",
+            "2024MNRAS.527.2697S",
+            "2024arXiv240400944B"
+        ]
+    },
+                """,
+            style={
+            'backgroundColor': '#20272d',
+            'color': '#E09351FF',
+            'padding': '10px',
+            'borderRadius': '5px',
+            'overflowX': 'auto',
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontSize': '12px',
+            'width': '80%',
+            'marginLeft': '10%'
+        }),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.P([
+            'Through a series of programmatic operations, the data was cleaned, ordered, and fit for exploring the published history of dark matter research. '
+            'Some operations are worth explaining further for transparency, since their results are hard to intuitively grasp otherwise.', html.Br(),
+            html.Br(),
+            'ARXIV CLASS', html.Br(),
+            html.Br(),
+            'Since a single bibcode can have several arxiv classes, I had to create a script that accounted for this. Otherwise, a simple operation like '
+            'for example finding the most frequent arxiv class in dark matter research would be skewed. Fortunately, the list order of appearance in the ADS '
+            'system is also the order of significance. This allowed me to pivot the "arxiv_class" column and attribute a relevance score for each classification '
+            'associated with a bibcode. A simple geometric sequence [1, 0.5, 0.25, 0.125, ...] was mapped to the order of appearance of arxiv class, representing its '
+            'relevance as a numerical weight. This script was written in "R":'
+            ], style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Pre(
+            """
+            df_longer <- arxiv |> 
+              unnest_longer(c('arxiv_class'), keep_empty = TRUE, values_to = NULL, 
+                            indices_to = "arxiv_rank", indices_include = TRUE)
+
+            # Filter out bibcodes with NA in arxiv_class
+            df_with_arxiv <- df_longer |>
+              filter(!is.na(arxiv_class))
+
+            df_without_arxiv <- df_longer |>
+              filter(is.na(arxiv_class))
+
+            arxiv_01 <- df_with_arxiv |>
+              pivot_wider(names_from = arxiv_rank, values_from = arxiv_class, 
+                          names_prefix = "arxiv.ordinal.", names_repair = "unique")
+
+            arxiv_02 <- arxiv_01 |>
+              mutate(across(starts_with("arxiv.ordinal."), ~factor(.x, levels = unique(.x[!is.na(.x)]))))
+
+            weight_factor <- function(rank) {
+              1 / (2 ^ (rank - 1))
+            }
+
+            arxiv_03 <- arxiv_02 |>
+              mutate(across(starts_with("arxiv.ordinal."), 
+                            ~ ifelse(!is.na(.), weight_factor(as.numeric(str_extract(cur_column(), "\\d+$"))),
+                                     NA_real_), .names = "weight_{col}"))
+
+            # Pivot longer to get arxiv_classification and arxiv_relevance_score columns
+            arxiv_03 <- arxiv_03 |>
+              pivot_longer(c(starts_with("arxiv.ordinal.")), 
+                           names_to = "arxiv_rank", 
+                           values_to = "arxiv_classification", 
+                           values_drop_na = TRUE) |>
+              pivot_longer(c(starts_with("weight_arxiv.ordinal.")), 
+                           names_to = "weight_rank", 
+                           values_to = "arxiv_relevance_score", 
+                           values_drop_na = TRUE) |>
+              filter(str_extract(arxiv_rank, "\\d+$") == str_extract(weight_rank, "\\d+$")) |>
+              select(-arxiv_rank, -weight_rank)
+
+            # Add column for arXiv category
+            arxiv_03 <- arxiv_03 |> 
+              mutate(arxiv_category = case_when(
+                grepl("^astro", arxiv_classification) ~ "astrophysics",
+                grepl("^cond-mat", arxiv_classification) ~ "condensed matter",
+                grepl("^hep-", arxiv_classification) ~ "high-energy physics",
+                grepl("^math", arxiv_classification) ~ "mathematics",
+                grepl("^cs", arxiv_classification) ~ "computer science",
+                grepl("^quant-ph", arxiv_classification) ~ "quantum physics",
+                grepl("^gr-qc", arxiv_classification) ~ "general relativity and quantum cosmology",
+                grepl("^nucl-", arxiv_classification) ~ "nuclear physics",
+                grepl("^physics", arxiv_classification) ~ "physics",
+                grepl("^q-bio", arxiv_classification) ~ "quantitative biology",
+                grepl("^q-fin", arxiv_classification) ~ "quantitative finance",
+                grepl("^stat", arxiv_classification) ~ "statistics",
+                grepl("^econ", arxiv_classification) ~ "economics",
+                grepl("^eess", arxiv_classification) ~ "electrical engineering and systems science",
+                grepl("^nlin", arxiv_classification) ~ "nonlinear sciences",
+                TRUE ~ "Other"
+              ))
+
+            # Combine the parts
+            arxiv_04 <- arxiv_03 |>
+              bind_rows(df_without_arxiv |> 
+                          mutate(arxiv_classification = NA, arxiv_relevance_score = NA))
+
+            # Remove left over columns
+            data <- arxiv_04 |> select(-c(arxiv_class, arxiv_rank))
+
+            distinct(data)
+                """,
+            style={
+            'backgroundColor': '#20272d',
+            'color': '#E09351FF',
+            'padding': '10px',
+            'borderRadius': '5px',
+            'overflowX': 'auto',
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontSize': '12px',
+            'width': '60%',
+            'marginLeft': '10%'
+        }),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.P([
+            'NATURAL LANGUAGE PROCESSING', html.Br(),
+            html.Br(),
+            'In order to gauge the ontological and epistemological trends and propositions for dark matter, it was important to extract relevant entities and '
+            'terms from the text data. First, the abstracts were cleaned from any plain text HTML and LaTeX that were present in the abstracts, taking care to '
+            'not accidentally remove any scientifically relevant notation. Then, a normalization function was created to homogenize any abbreviations or acronyms '
+            'present, for example "wimp" and "weakly interacting massive particle". Ordinary stopword removal and lowercaseing was also done. Below, an example script '
+            'of the extraction of terms related to dark matter models:'
+            ], style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Pre(
+            """
+            import pandas as pd
+            import re
+
+            df = pd.read_csv("csv_data/prior_to_lemmatization.csv")
+            entities = [
+                {"label": "DARK MATTER MODELS", "pattern": "Self-Interacting Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "SIDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Warm Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "WDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Axion"},
+                {"label": "DARK MATTER MODELS", "pattern": "Axions"},
+                {"label": "DARK MATTER MODELS", "pattern": "ALP"},  
+                {"label": "DARK MATTER MODELS", "pattern": "Axion-Like Particles"},
+                {"label": "DARK MATTER MODELS", "pattern": "Axion-Like Particle"},
+                {"label": "DARK MATTER MODELS", "pattern": "Sterile Neutrino Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Sterile Neutrino"},
+                {"label": "DARK MATTER MODELS", "pattern": "Fuzzy Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "FDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Supersymmetric Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Neutralino Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Neutralino"},
+                {"label": "DARK MATTER MODELS", "pattern": "Kaluza-Klein Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Kaluza-Klein"},
+                {"label": "DARK MATTER MODELS", "pattern": "WIMP"},  
+                {"label": "DARK MATTER MODELS", "pattern": "WIMPS"},
+                {"label": "DARK MATTER MODELS", "pattern": "Weakly Interacting Massive Particles"},
+                {"label": "DARK MATTER MODELS", "pattern": "Weakly-Interacting Massive Particles"},
+                {"label": "DARK MATTER MODELS", "pattern": "Weakly Interacting Massive Particle"},
+                {"label": "DARK MATTER MODELS", "pattern": "Weakly-Interacting Massive Particle"},
+                {"label": "DARK MATTER MODELS", "pattern": "Gravitino Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Gravitino"},
+                {"label": "DARK MATTER MODELS", "pattern": "Tachyon Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Tachyon"},
+                {"label": "DARK MATTER MODELS", "pattern": "Scalar Field Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "SFDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Vector Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "VDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Primordial Black Holes"},
+                {"label": "DARK MATTER MODELS", "pattern": "Primordial Black Hole"},
+                {"label": "DARK MATTER MODELS", "pattern": "PBH"},
+                {"label": "DARK MATTER MODELS", "pattern": "Superfluid Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "SFD"},
+                {"label": "DARK MATTER MODELS", "pattern": "Quintessence Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Quintessence"},
+                {"label": "DARK MATTER MODELS", "pattern": "QDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Ultralight Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "ULDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Non-thermal Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Mirror Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Macroscopic Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "MACDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Asymmetric Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "ADM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Composite Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Leptophilic Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Bosonic Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "BDM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Anapole Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "WIMPzilla"}, 
+                {"label": "DARK MATTER MODELS", "pattern": "Self-Annihilating Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "MaCHOs"}, 
+                {"label": "DARK MATTER MODELS", "pattern": "Massive Compact Halo Object"}, 
+                {"label": "DARK MATTER MODELS", "pattern": "Super Weakly Interacting Massive Particles"},
+                {"label": "DARK MATTER MODELS", "pattern": "Super Weakly Interacting Massive Particle"},
+                {"label": "DARK MATTER MODELS", "pattern": "SWIMP"},
+                {"label": "DARK MATTER MODELS", "pattern": "SWIMPS"},
+                {"label": "DARK MATTER MODELS", "pattern": "Massive Compact Halo Objects"},  
+                {"label": "DARK MATTER MODELS", "pattern": "Fermionic Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Little Higgs"},  
+                {"label": "DARK MATTER MODELS", "pattern": "QCD Axions"},  
+                {"label": "DARK MATTER MODELS", "pattern": "Quantum Chromodynamics Axions"},
+                {"label": "DARK MATTER MODELS", "pattern": "Emergent Gravity"}, 
+                {"label": "DARK MATTER MODELS", "pattern": "Glueball"},
+                {"label": "DARK MATTER MODELS", "pattern": "Glueball Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Strongly Interacting Massive Particles"},
+                {"label": "DARK MATTER MODELS", "pattern": "Strongly Interacting Massive Particle"},
+                {"label": "DARK MATTER MODELS", "pattern": "SIMP"},
+                {"label": "DARK MATTER MODELS", "pattern": "SIMPS"},
+                {"label": "DARK MATTER MODELS", "pattern": "Elastically Decoupling Relic"},
+                {"label": "DARK MATTER MODELS", "pattern": "ELDER DM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Feebly Interacting Massive Particles"},
+                {"label": "DARK MATTER MODELS", "pattern": "Feebly Interacting Massive Particle"},
+                {"label": "DARK MATTER MODELS", "pattern": "FIMP"},
+                {"label": "DARK MATTER MODELS", "pattern": "FIMPS"},
+                {"label": "DARK MATTER MODELS", "pattern": "Decaying Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Dark Photon"},
+                {"label": "DARK MATTER MODELS", "pattern": "Planckian Interacting Massive Particles"},
+                {"label": "DARK MATTER MODELS", "pattern": "PIMP"},
+                {"label": "DARK MATTER MODELS", "pattern": "Sterile Neutrino Dark Matter (Dodelson-Widrow)"},
+                {"label": "DARK MATTER MODELS", "pattern": "Dodelson-Widrow Sterile Neutrino"},
+                {"label": "DARK MATTER MODELS", "pattern": "WIMP-less Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "WIMP-less DM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Composite Asymmetric Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Composite ADM"},
+                {"label": "DARK MATTER MODELS", "pattern": "Self-Interacting Dark Energy"},
+                {"label": "DARK MATTER MODELS", "pattern": "SIDEN"},
+                {"label": "DARK MATTER MODELS", "pattern": "Hidden-Sector Dark Matter"},
+                {"label": "DARK MATTER MODELS", "pattern": "Hidden-Sector DM"}
+            ]
+
+            entity_patterns = '|'.join([r'\b' + re.escape(entity["pattern"]) + r'\b' for entity in entities])
+
+            entity_regex = re.compile(entity_patterns, re.IGNORECASE)
+
+            def extract_entities(text):
+                if isinstance(text, str):
+                    return list(set(entity_regex.findall(text))) 
+                else:
+                    return []  
+
+            df['dm_models'] = df['abstract_clean'].apply(extract_entities)
+            print(df['dm_models'].head(10))
+            -------------------------------
+            0                                                   []
+            1                                                   []
+            2    [weakly interacting massive particle, weakly i...
+            3    [axions, wimps, weakly interacting massive par...
+            4                                                   []
+            5                                                   []
+            6                                                   []
+            7                                                   []
+            8    [neutralino dark matter, weakly-interacting ma...
+            9                       [self-interacting dark matter]
+            Name: dm_models, dtype: object
+
+                """,
+            style={
+            'backgroundColor': '#20272d',
+            'color': '#E09351FF',
+            'padding': '10px',
+            'borderRadius': '5px',
+            'overflowX': 'auto',
+            'fontFamily': 'DejaVu Sans Mono',
+            'fontSize': '12px',
+            'width': '60%',
+            'marginLeft': '10%'
+        }),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+                html.P([
+            'I created similar scripts for various relevant terms and entities [as seen in the plots] and joined the datasets by the bibcode key, ensuring '
+            'consistency and completeness. The above scripts and descriptions are just a small sample of the total process of data extraction, manipulation, '
+            'subsetting, and so on. Please contact me for further information or requests of subsets / ideas. Currently, I am building a machine learning model '
+            'trained on the data that I hope will result in an AI model which users can chat with directly, answering any questions about the bibliographical history of dark matter.'
+            ], style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 # Main layout
@@ -1567,7 +2183,7 @@ app.layout = html.Div(id='main-div', style={'fontFamily': 'DejaVu Sans Mono', 'b
     html.Div(id='page-content',
              style={'marginTop': '80px', 'padding': '20px', 'backgroundColor': dark_theme['background']}),  # Dynamic content area
     html.Footer(
-            "© 2024 Simon Allzén | s.allzen@uva.nl",  # Footer text
+            "© 2024 Simon Allzén | s.allzen[at]uva.nl",  # Footer text
             id='footer'
         )
 ])
