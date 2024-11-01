@@ -1623,7 +1623,7 @@ def page_co_occurrence_layout():
             html.Iframe(
                 src="assets/network/index.html",  # Load from assets directory
                 style={
-                    "width": "1200px",   # Adjust as needed
+                    "width": "1000px",   # Adjust as needed
                     "height": "750px", # Match the network height
                     "border": "none",
                     "display": "block",
@@ -1676,7 +1676,7 @@ def page_co_occurrence_layout():
             html.Iframe(
                 src="assets/network2/index.html",  # Load from assets directory
                 style={
-                    "width": "1200px",   # Adjust as needed
+                    "width": "1000px",   # Adjust as needed
                     "height": "750px", # Match the network height
                     "border": "none",
                     "display": "block",
@@ -1729,7 +1729,7 @@ def page_co_occurrence_layout():
             html.Iframe(
                 src="assets/network3/index.html",  # Load from assets directory
                 style={
-                    "width": "1200px",   # Adjust as needed
+                    "width": "1000px",   # Adjust as needed
                     "height": "750px", # Match the network height
                     "border": "none",
                     "display": "block",
@@ -2316,7 +2316,7 @@ def page_citation_network_layout():
             html.Iframe(
                 src="assets/network4/index.html",  # Load from assets directory
                 style={
-                    "width": "1200px",   # Adjust as needed
+                    "width": "1000px",   # Adjust as needed
                     "height": "750px", # Match the network height
                     "border": "none",
                     "display": "block",
