@@ -576,7 +576,8 @@ sidebar = html.Div(
             id='page-selector-dropdown',
             options=[
                 {'label': 'Dark Matter Models', 'value': '/dmm'},
-                {'label': 'co occurrence graphs', 'value': '/co_occurrence'},
+                {'label': 'Co-occurrence graphs', 'value': '/co_occurrence'},
+                {'label': 'Citation network', 'value': '/citation_network'},
                 {'label': 'Metrics', 'value': '/metrics'},
                 {'label': 'Authors', 'value': '/authors'},
                 {'label': 'arXiv', 'value': '/arXiv'},
@@ -613,7 +614,7 @@ sidebar = html.Div(
 
 # Header
 header = html.Div(
-    html.H4("dark matter research data", id='header-title', style={'textAlign': 'center', 'color': dark_theme['text']}),
+    html.H4("DARK MATTER RESEARCH DATA", id='header-title', style={'textAlign': 'center', 'color': dark_theme['text']}),
     style={'backgroundColor': dark_theme['background'], 'padding': '10px'}
 )
 
@@ -621,7 +622,7 @@ header = html.Div(
 def page_dmm_layout():
     return html.Div([
 # PLOT 1        
-html.H1('Dark Matter Models', style={
+html.H1('DARK MATTER MODELS', style={
     'fontFamily': 'DejaVu Sans Mono', 
     'fontWeight': '400', 
     'color': dark_theme['text'], 
@@ -629,7 +630,7 @@ html.H1('Dark Matter Models', style={
     'marginLeft': '10%'  # Optional: Align text with other elements
 }),
 
-html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
 html.H1('1.', style={
     'fontFamily': 'DejaVu Sans Mono', 
     'fontWeight': '400', 
@@ -881,90 +882,90 @@ html.P(
 
 def page_particles_layout():
     return html.Div([
-        html.H1('Particles', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
-        html.Img(id='particles-img', src='assets/top_20_particles_grid_dark.svg', style={'width': '100%', 'height': 'auto'}),
+        html.H1('PARTICLES', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.Img(id='particles-img', src='assets/top_20_particles_grid_dark.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_gravity_layout():
     return html.Div([
-        html.H1('Gravitational phenomena', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('GRAVITATIONAL PHENOMENA', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='gravity-img', src='assets/top15_gravity_grid.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='gravity-img', src='assets/top15_gravity_grid.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.Img(id='gravity-all-img', src='assets/all_gravity_terms_grid.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='gravity-all-img', src='assets/all_gravity_terms_grid.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_theories_layout():
     return html.Div([
-        html.H1('Theories', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('THEORY', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='theory-img', src='assets/top20_theory_grid_dark.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='theory-img', src='assets/top20_theory_grid_dark.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_telescopes_layout():
     return html.Div([
-        html.H1('Telescopes', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('TELESCOPES', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='telescopes-img', src='assets/top20_telescopes_grid.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='telescopes-img', src='assets/top20_telescopes_grid.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_detectors_layout():
     return html.Div([
-        html.H1('Detectors', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('DETECTORS', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='detector-img', src='assets/top20_detectors_grid.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='detector-img', src='assets/top20_detectors_grid.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_colliders_layout():
     return html.Div([
-        html.H1('Colliders', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('COLLIDERS', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='colliders-img', src='assets/top20_colliders_grid.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='colliders-img', src='assets/top20_colliders_grid.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_inferences_layout():
     return html.Div([
-        html.H1('Inferences', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('INFERENCES', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='inferences-img', src='assets/top20_inferences_grid.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='inferences-img', src='assets/top20_inferences_grid.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_methods_layout():
     return html.Div([
-        html.H1('Methods', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('METHODS', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='methods-img', src='assets/top20_methods_grid.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='methods-img', src='assets/top20_methods_grid.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_stellar_objects_layout():
     return html.Div([
-        html.H1('Stellar objects', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('STELLAR OBJECTS', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Grid plot showing frequency of reference over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Img(id='stellar-objects-img', src='assets/top20_stellar_objects.svg', style={'width': '100%', 'height': 'auto'}),
+        html.Img(id='stellar-objects-img', src='assets/top20_stellar_objects.svg', style={'width': '80%', 'height': 'auto'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '70%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
 def page_mass_range_layout():
     return html.Div([
-        html.H1('Mass range', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.H1('MASS RANGE', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H2('Use frequency of mass/energy expressions over time.', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
         html.Div(
             html.Img(id='mass-img', src='assets/mass_range.svg', style={'width': '80%', 'height': 'auto'}),
@@ -975,7 +976,7 @@ def page_mass_range_layout():
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 def page_metrics_layout():
     return html.Div([
-        html.H1('Metrics', style={
+        html.H1('METRICS', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -983,7 +984,7 @@ def page_metrics_layout():
             'marginLeft': '10%'  # Optional: Align text with other elements
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -1034,7 +1035,7 @@ def page_metrics_layout():
 def page_authors_layout():
     return html.Div([
 # PLOT 1
-        html.H1('Authors', style={
+        html.H1('AUTHORS', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1042,7 +1043,7 @@ def page_authors_layout():
             'marginLeft': '10%'  # Optional: Align text with other elements
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -1075,7 +1076,7 @@ def page_authors_layout():
             }
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.Img(id='top20-cited-authors-img', src='assets/author_citations.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+        html.Img(id='top20-cited-authors-img', src='assets/author_citations.svg', style={'width': '70%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
             'display': 'block'}),
 # PLOT 2
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
@@ -1111,7 +1112,7 @@ def page_authors_layout():
             }
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
-        html.Img(id='top20-productive-authors-img', src='assets/author_paper_count.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+        html.Img(id='top20-productive-authors-img', src='assets/author_paper_count.svg', style={'width': '70%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
             'display': 'block'}),
 
 
@@ -1121,7 +1122,7 @@ def page_authors_layout():
 def page_arXiv_layout():
     return html.Div([
 # PLOT 1
-            html.H1('arXiv class', style={
+            html.H1('ARXIV CLASSIFICATION', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1129,7 +1130,7 @@ def page_arXiv_layout():
             'marginLeft': '10%'
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -1217,7 +1218,7 @@ def page_arXiv_layout():
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Div(
-            dcc.Graph(id='titles-arXiv-fig', figure=fig_3, style={'width': '50%', 'height': 'auto'}),
+            dcc.Graph(id='titles-arXiv-fig', figure=fig_3, style={'width': '40%', 'height': 'auto'}),
             style={'display': 'flex', 'justifyContent': 'center'}
         ),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
@@ -1226,7 +1227,7 @@ def page_arXiv_layout():
 def page_keywords_layout():
     return html.Div([
 # PLOT 1
-        html.H1('Keywords', style={
+        html.H1('KEYWORDS', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1234,7 +1235,7 @@ def page_keywords_layout():
             'marginLeft': '10%'  # Optional: Align text with other elements
         }),
 
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
@@ -1341,7 +1342,7 @@ def page_keywords_layout():
 
 def page_research_focus_layout():
     return html.Div([
-        html.H1('Research focus', style={
+        html.H1('RESEARCH FOCUS', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1475,7 +1476,7 @@ def page_research_focus_layout():
 
 def page_co_occurrence_layout():
     return html.Div([
-         html.H1('Co-occurrence graphs', style={
+         html.H1('CO-OCCURRENCE GRAPHS', style={
             'fontFamily': 'DejaVu Sans Mono', 
             'fontWeight': '400', 
             'color': dark_theme['text'], 
@@ -1484,7 +1485,7 @@ def page_co_occurrence_layout():
          }),        
         
 # GRAPH 1
-        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
          
         html.H1('1.', style={
             'fontFamily': 'DejaVu Sans Mono', 
@@ -2175,6 +2176,64 @@ def page_about_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
+def page_citation_network_layout():
+    return html.Div([ 
+        html.H1('CITATION NETWORK.', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'fontSize': '3em',
+            'marginLeft': '10%',
+            'marginTop': '2%',
+            'marginBottom': '2%'
+        }),
+        html.H2('', style={
+            'fontFamily': 'DejaVu Sans Mono', 
+            'fontWeight': '400', 
+            'color': dark_theme['text'], 
+            'textAlign': 'left',
+            'marginLeft': '10%',
+            'lineHeight': '2',
+            'width': '80%',
+        }),
+        
+        html.P(
+            'Citation network for papers with "dark matter" as keyword. Nodes are papers, links citations. Colors are given by arXiv classification, node size by number of citations. '
+            'Navigate by click and drag, select any paper by clicking to view its connections, arXiv classification, year of publication, metric data, et.c. Most papers reference papers '
+            'from their own arXiv classification, implying a low grade of interdisciplinarity.',
+            style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        # Embed the HTML file in an Iframe
+        html.Div(
+            html.Iframe(
+                src="assets/network4/index.html",  # Load from assets directory
+                style={
+                    "width": "1200px",   # Adjust as needed
+                    "height": "750px", # Match the network height
+                    "border": "none",
+                    "display": "block",
+                    "margin": "0 auto",
+                    "fontFamily": "DejaVu Sans Mono",
+                }
+            ),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the Iframe
+        ),
+
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
+
 # Main layout
 app.layout = html.Div(id='main-div', style={'fontFamily': 'DejaVu Sans Mono', 'backgroundColor': dark_theme['background']}, children=[
     dcc.Location(id='url', refresh=False),  # Track the URL for page routing
@@ -2235,7 +2294,8 @@ def display_page(pathname):
         return page_co_occurrence_layout()
     elif pathname == '/about':
         return page_about_layout()
-
+    elif pathname == '/citation_network':
+        return page_citation_network_layout()
 
     else:
         return html.Div([
@@ -2267,3 +2327,5 @@ def update_plots(pathname):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8054))
     app.run_server(debug=False, host='0.0.0.0', port=port)
+
+    
