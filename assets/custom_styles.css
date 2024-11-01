@@ -60,7 +60,7 @@ body {
     position: fixed;
     width: 25%;
     height: 80%;
-    padding: 50px;
+    padding: 40px;
     background-color: #20272d; /* Example background color */
     color: #FFEACF; /* Ensure all sidebar text inherits this color */
 }
