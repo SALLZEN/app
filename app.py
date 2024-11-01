@@ -31,7 +31,98 @@ paper_counts = pd.read_csv('assets/paper_counts.csv')
 
 
 # Plot codes:
-#                                                                                          -> PLOT <-
+# Replace NaN or empty arxiv_category with a placeholder "No class"
+df['arxiv_category'] = df['arxiv_category'].apply(lambda x: ', '.join(x) if isinstance(x, list) else (x if pd.notnull(x) else 'No class'))
+df['arxiv_category'] = df['arxiv_category'].replace('', 'No class')  # Ensure empty strings are replaced with "No class"
+
+# Group by 'year' and count the number of publications
+publications_per_year = df.groupby('year').size().reset_index(name='publication_count')
+
+# Create a DataFrame that includes the count and percentage of arxiv_category per year
+arxiv_distribution = df.groupby(['year', 'arxiv_category']).size().reset_index(name='category_count')
+arxiv_distribution = arxiv_distribution.merge(publications_per_year, on='year')
+arxiv_distribution['percentage'] = (arxiv_distribution['category_count'] / arxiv_distribution['publication_count']) * 100
+
+# Format arxiv_distribution for hover information
+# Sort arxiv_distribution by 'category_count' in descending order
+arxiv_distribution = arxiv_distribution.sort_values(by='category_count', ascending=False)
+
+# Create the 'formatted_info' column with the sorted data
+arxiv_distribution['formatted_info'] = arxiv_distribution.apply(
+    lambda row: f"{row['arxiv_category']}: {row['category_count']} ({row['percentage']:.1f}%)<br>", axis=1
+)
+
+# Aggregate formatted_info by year
+hover_data = arxiv_distribution.groupby('year')['formatted_info'].apply(lambda x: ''.join(x)).reset_index(name='arxiv_distribution')
+
+# Create a DataFrame with titles for years with 15 or fewer papers
+titles_per_year = df.groupby('year')['title'].apply(lambda x: '<br>'.join(x) if len(x) <= 15 else '').reset_index(name='titles')
+
+# Merge all hover data
+merged_df = publications_per_year.merge(hover_data, on='year', how='left').merge(titles_per_year, on='year', how='left')
+
+# Create the Plotly figure
+fig_X = go.Figure()
+
+# Add a line trace for publications per year
+fig_X.add_trace(go.Scatter(
+    x=merged_df['year'],
+    y=merged_df['publication_count'],
+    mode='lines+markers',
+    line=dict(color='#E09351', width=1),
+    marker=dict(size=8),
+    hovertemplate=(
+        '<b>Year:</b> %{x}<br>' +
+        '<b>Publications:</b> %{y}<br>' +
+        '<b>arXiv Categories:</b><br>%{customdata[0]}' +
+        '<br><b>Titles:</b><br>%{customdata[1]}<extra></extra>'
+        if '%{customdata[1]}' != '' else  # Display titles conditionally
+        '<b>Year:</b> %{x}<br>' +
+        '<b>Publications:</b> %{y}<br>' +
+        '<b>arXiv Categories:</b><br>%{customdata[0]}<extra></extra>'
+    ),
+    customdata=merged_df[['arxiv_distribution', 'titles']].values  # Pass both the arXiv distribution and titles
+))
+
+# Update the layout
+fig_X.update_layout(
+    font=dict(
+        family="DejaVu Sans Mono",  # Custom font
+        size=12,
+    ),
+    title_font=dict(
+        family="DejaVu Sans Mono",  # Title font customization
+        size=18,
+        color='#fff8e8',  # Title color
+    ),
+    plot_bgcolor='#20272d',  # Custom background color
+    paper_bgcolor='#20272d',  # Custom outer background color
+    width=1000,  # Custom width
+    height=600,  # Custom height
+    xaxis=dict(
+        title_font=dict(color='#fff8e8'),  # X-axis label color
+        tickfont=dict(color='#fff8e8'),  # X-axis tick label color
+        gridcolor='rgba(255, 255, 255, 0.2)',  # X-axis grid color (faint white)
+        linecolor='rgba(255, 255, 255, 0.5)',  # X-axis line color
+        type='linear'
+    ),
+    yaxis=dict(
+        title_font=dict(color='#fff8e8'),  # Y-axis label color
+        tickfont=dict(color='#fff8e8'),  # Y-axis tick label color
+        gridcolor='rgba(255, 255, 255, 0.2)',  # Y-axis grid color (faint white)
+        linecolor='rgba(255, 255, 255, 0.5)',  # Y-axis line color
+        type='log',
+    ),
+    hoverlabel=dict(
+        bgcolor='#333333',
+        font_size=12,
+        font_family="DejaVu Sans Mono",
+        font_color='#FFF8E8'
+    ),
+    showlegend=False
+)
+
+#-> PLOT <-
 #dark matter models & research trends
 spektrum = ['#FFF8E8', '#FCDCA4', '#FDBF7F','#FCB57A', '#EEB57C', '#EE9D6D', '#ECD305',  '#FCC405', '#ECB13B','#F2A604','#DC8334', '#CE781F', '#EB7B13', '#E46A26', '#DC670B','#EC5B1D','#B64810', '#965C02',  '#805C08', '#784304','#893B04','#943D0C', '#8E4709','#ED90AE',  '#F0817E', '#9E6171', '#D58487','#976264', '#A5D5CA',  '#A4D4AC', '#59A689','#56AA93','#076166', '#AED3D4',  '#65D4CC', '#5E9E95', '#314D5A','#0A4E6B', '#343E49','#C3CC9C', '#89A85A',  '#5DAA53', '#0D7249', '#3C5531','#746C0B', '#41502B']
 random.shuffle(spektrum)
@@ -571,12 +662,15 @@ dark_theme = {
 sidebar = html.Div(
     [
         html.Hr(style={'border': '1px solid #E09351FF', 'width': '85%', 'margin': '10px auto', 'opacity': '0.7'}),
-        html.P("plots & graphs:", id='plots-text', style={'textAlign': 'center', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text']}),  
+        html.P("plots & graphs:", id='plots-text', style={'textAlign': 'center', 'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text']}),
+        html.Hr(style={'border': '1px solid #E09351FF', 'width': '85%', 'margin': '10px auto', 'opacity': '0.7'}),
         dcc.Dropdown(
             id='page-selector-dropdown',
             options=[
+                {'label': 'Dark Matter publications', 'value': '/papers'},
                 {'label': 'Dark Matter Models', 'value': '/dmm'},
                 {'label': 'Co-occurrence graphs', 'value': '/co_occurrence'},
+                {'label': 'Co-occurrence matrix', 'value': '/matrix'},
                 {'label': 'Citation network', 'value': '/citation_network'},
                 {'label': 'Metrics', 'value': '/metrics'},
                 {'label': 'Authors', 'value': '/authors'},
@@ -594,7 +688,7 @@ sidebar = html.Div(
                 {'label': 'Stellar objects', 'value': '/stellar_objects'},
                 {'label': 'Mass range', 'value': '/mass_range'},
             ],
-            value='/dmm',  # Default value
+            value='/papers',  # Default value
             className='custom-dropdown',  # Apply custom CSS class
             style={'color': dark_theme['text'], 'backgroundColor': dark_theme['background']}  # Dropdown's visible part
         ),
@@ -618,7 +712,6 @@ header = html.Div(
     style={'backgroundColor': dark_theme['background'], 'padding': '10px'}
 )
 
-# Page layouts without light/dark mode switching
 def page_dmm_layout():
     return html.Div([
 # PLOT 1        
@@ -2237,6 +2330,90 @@ def page_citation_network_layout():
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
     ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 
+def page_matrix_layout():
+    return html.Div([
+        html.H1('MATRIX PLOTS', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '40%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.P('Heatmap matrix plots showing co-occurrences between dark matter models and theoretical / experimental / methodological concepts.',
+                style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_theories', src='assets/co_occurrence_dm_models_and_theories.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_particles', src='assets/co_occurrence_dm_models_and_particles.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_detectors', src='assets/co_occurrence_dm_models_and_detectors.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_colliders', src='assets/co_occurrence_dm_models_and_colliders.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_telescopes', src='assets/co_occurrence_dm_models_and_telescopes.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_inferences', src='assets/co_occurrence_dm_models_and_inferences.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_methods', src='assets/co_occurrence_dm_models_and_methods.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            html.Img(id='co_occurrence_dm_models_and_gravity', src='assets/co_occurrence_dm_models_and_gravity.svg', style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}  # Center the image
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
+def page_papers_layout():
+    return html.Div([
+        html.H1('History of Dark Matter Publishing', style={'fontFamily': 'DejaVu Sans Mono', 'fontWeight': '400', 'color': dark_theme['text'], 'textAlign': 'left', 'marginLeft': '10%'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '50%', 'margin': '10px 0', 'opacity': '0.5', 'marginLeft': '10%'}),
+        html.P('All publications that contain the phrase "dark matter" somewhere in the text. Hover for additional information. '
+               'If the sum of yearly publications <=15, paper titles are shown. For later papers, the distribution of arxiv classifications are shown. ',
+                style={
+                'fontFamily': 'DejaVu Sans Mono',
+                'color': dark_theme['text'], 
+                'textAlign': 'left',
+                'marginLeft': '10%',
+                'padding': '5px', 
+                'lineHeight': '2',
+                'fontSize': '12px',
+                'width': '80%',  
+                'margin': '0 auto',
+            }
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Div(
+            dcc.Graph(id='all-papers-img', figure=fig_X, style={'width': '80%', 'height': 'auto'}),
+            style={'display': 'flex', 'justifyContent': 'center'}
+        ),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+    ], style={'marginLeft': '18%', 'padding': '20px', 'backgroundColor': dark_theme['background']})
 # Main layout
 app.layout = html.Div(id='main-div', style={'fontFamily': 'DejaVu Sans Mono', 'backgroundColor': dark_theme['background']}, children=[
     dcc.Location(id='url', refresh=False),  # Track the URL for page routing
@@ -2263,6 +2440,8 @@ def update_url_from_dropdown(selected_page):
 def display_page(pathname):
     if pathname == '/dmm':
         return page_dmm_layout()
+    elif pathname == '/papers':
+        return page_papers_layout()
     elif pathname == '/particles':
         return page_particles_layout()
     elif pathname == '/gravity':
@@ -2299,7 +2478,8 @@ def display_page(pathname):
         return page_about_layout()
     elif pathname == '/citation_network':
         return page_citation_network_layout()
-
+    elif pathname == '/matrix':
+        return page_matrix_layout()
     else:
         return html.Div([
             html.H1("404 - Page Not Found", style={'textAlign': 'center', 'color': 'red'}),
