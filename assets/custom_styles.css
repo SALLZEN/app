@@ -59,8 +59,8 @@ body {
 #sidebar {
     position: fixed;
     width: 25%;
-    height: 100%;
-    padding: 20px;
+    height: 80%;
+    padding: 50px;
     background-color: #20272d; /* Example background color */
     color: #FFEACF; /* Ensure all sidebar text inherits this color */
 }
