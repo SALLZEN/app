@@ -1305,6 +1305,9 @@ def page_keywords_layout():
             }
         ),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
+        html.Img(id='top-authors-keyword-img', src='assets/top_authors_dm_keyword.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
+            'display': 'block'}),
+        html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
         html.Img(id='papercount-img', src='assets/dm_papers_over_time.svg', style={'width': '80%', 'height': 'auto', 'marginBottom': '20px', 'margin': '0 auto', 
             'display': 'block'}),
         html.Hr(style={'border': '0.5px solid #E09351FF', 'width': '80%', 'margin': '10px auto', 'opacity': '0.5'}),
