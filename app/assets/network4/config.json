@@ -1,0 +1,55 @@
+{
+  "type": "network",
+  "version": "1.0",
+  "data": "data.json",
+  "logo": {
+    "file": "",
+    "link": "",
+    "text": "Simon Allzén"
+  },
+  "text": {
+    "more": "Citation network.",
+    "intro": "Citation network with all papers that have the keyword \"dark matter\".",
+    "title": "Dark matter paper citation network"
+  },
+  "legend": {
+    "edgeLabel": "citation",
+    "colorLabel": "arxiv classification",
+    "nodeLabel": "publications"
+  },
+  "features": {
+    "search": true,
+    "groupSelectorAttribute": false,
+    "hoverBehavior": "dim"
+  },
+  "informationPanel": {
+    "groupByEdgeDirection": true,
+    "imageAttribute": false
+  },
+  "sigma": {
+    "drawingProperties": {
+      "defaultEdgeType": "curve",
+      "defaultHoverLabelBGColor": "#20272d",
+      "defaultLabelBGColor": "#20272d",
+      "activeFontStyle": "normal",
+      "defaultLabelColor": "#fff8e8",
+      "labelThreshold": 8,
+      "defaultLabelHoverColor": "#fff8e8",
+      "fontStyle": "normal",
+      "hoverFontStyle": "normal",
+      "defaultLabelSize": 14,
+      "nodeBorderWidth": 20,
+      "nodeBorderColor": "#20272d"
+    },
+    "graphProperties": {
+      "maxEdgeSize": 0.5,
+      "minEdgeSize": 0.2,
+      "minNodeSize": 1,
+      "maxNodeSize": 7
+    },
+    "mouseProperties": {
+      "maxRatio": 20,
+      "minRatio": 0.75
+    }
+  }
+}
